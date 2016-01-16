@@ -60,5 +60,3 @@ Being developed by Tim Kebr, no current release date is in mind.
 - **Concept Art**
 
 ![Imgur](http://i.imgur.com/G9yOw6r.png)
-
-
