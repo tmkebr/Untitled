@@ -14,8 +14,12 @@ Being developed by Tim Kebr, no current release date is in mind.
 ### Screenshots:
 
 ![Imgur](http://i.imgur.com/k1XLFNZ.png)
+![Imgur](http://i.imgur.com/mGRWGJ7.png)
+![Imgur](http://i.imgur.com/uecxSab.gif)
+![Imgur](http://i.imgur.com/aNXgLEn.gif)
 
 - In-engine shot showing the lighting and the player's bedroom (image contains old player model).
+- Some parts of the game are in side-view
 
 ## New Player Character:
 #### Various masks, each with a unique buff:
