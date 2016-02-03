@@ -1,0 +1,17 @@
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEditor.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.Analytics.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.Networking.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.UI.dll
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.xml
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEditor.xml
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.UI.xml
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.Networking.xml
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEngine.Analytics.xml
+D:\Unity Workspace\Platform\Temp\UnityVS_bin\Debug\UnityEditor.iOS.Extensions.Xcode.xml
+D:\Unity Workspace\Platform\obj\Debug\UnityVS.Platform.CSharp.csprojResolveAssemblyReference.cache
+D:\Unity Workspace\Platform\obj\Debug\Assembly-CSharp.dll
+D:\Unity Workspace\Platform\obj\Debug\Assembly-CSharp.pdb
