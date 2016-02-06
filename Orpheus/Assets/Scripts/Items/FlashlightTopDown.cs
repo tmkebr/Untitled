@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 
@@ -13,7 +13,7 @@ public class FlashlightTopDown : MonoBehaviour
     public KeyCode flashlightDownKey = KeyCode.S;
     public float defaultAngle, defaultRange, pivotSpeed; // the angle of the spotlight's cone in degrees, the range of the light, speed of movement
     public AudioClip clickSound;
-    private AudioSource audio;
+    private AudioSource theAudio;
 
 
     // battery-related variables
@@ -43,7 +43,7 @@ public class FlashlightTopDown : MonoBehaviour
     void Start()
     {
 
-        audio = GetComponent<AudioSource>();
+        theAudio = GetComponent<AudioSource>();
 
 
         // set-up and store the light for use
@@ -86,12 +86,12 @@ public class FlashlightTopDown : MonoBehaviour
         if (Input.GetKeyDown(toggleKeyCode) && (flashlight.enabled != true))
         {
             flashlight.enabled = true;
-            audio.PlayOneShot(clickSound);
+            theAudio.PlayOneShot(clickSound);
         }
         else if (Input.GetKeyDown(toggleKeyCode) && flashlight.enabled)
         {
             flashlight.enabled = false;
-            audio.PlayOneShot(clickSound);
+            theAudio.PlayOneShot(clickSound);
         }
     }
 

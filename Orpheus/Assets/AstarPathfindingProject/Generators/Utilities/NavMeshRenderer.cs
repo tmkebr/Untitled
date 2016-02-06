@@ -19,10 +19,10 @@ public class NavMeshRenderer : MonoBehaviour {
 	void Update () {
 		#if UNITY_EDITOR
 		if (lastLevel == "") {
-			lastLevel = EditorApplication.currentScene;
+			lastLevel = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
 		}
 		
-		if (lastLevel != EditorApplication.currentScene) {
+		if (lastLevel != UnityEngine.SceneManagement.SceneManager.GetActiveScene().path) {
 			DestroyImmediate (gameObject);
 		}
 		#endif

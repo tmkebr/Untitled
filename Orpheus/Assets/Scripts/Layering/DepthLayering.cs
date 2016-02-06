@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class DepthLayering : MonoBehaviour {
@@ -15,11 +15,11 @@ public class DepthLayering : MonoBehaviour {
     public string behindLayerName;
     public string frontLayerName;
 
-    private SpriteRenderer renderer;
+    private SpriteRenderer theRenderer;
 
     void Start()
     {
-        renderer = GetComponent<SpriteRenderer>();
+        theRenderer = GetComponent<SpriteRenderer>();
 
 
         //behindLayerValue = player.sortingLayerID - 1;
@@ -34,12 +34,12 @@ public class DepthLayering : MonoBehaviour {
         if (playerY > transform.position.y)
         {
             //Debug.Log("above");
-            renderer.sortingLayerName = frontLayerName;
+            theRenderer.sortingLayerName = frontLayerName;
         }
         else
         {
             //Debug.Log("Below");
-            renderer.sortingLayerName = behindLayerName;
+            theRenderer.sortingLayerName = behindLayerName;
         }
 	}
 }

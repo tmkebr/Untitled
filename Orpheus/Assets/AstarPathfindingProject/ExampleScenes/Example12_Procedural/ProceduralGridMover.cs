@@ -289,7 +289,7 @@ public class ProceduralGridMover : MonoBehaviour {
 			// Recalculate the connections of all nodes
 			for ( int z = 0; z < depth; z++ ) {
 				for ( int x = 0; x < width; x++ ) {
-					graph.CalculateConnections (nodes, x, z, nodes[z*width+x]);
+					graph.CalculateConnections (x, z, nodes[z*width+x]);
 				}
 			}
 		}

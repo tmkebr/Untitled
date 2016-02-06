@@ -3,10 +3,13 @@ using System.Collections;
 
 
 [RequireComponent(typeof(LightDetector))]
+[RequireComponent(typeof(Enemy))]
+[RequireComponent(typeof(EnemyAI))]
 public class Light_Damage : MonoBehaviour {
 
     LightDetector connectedDetector;
-    public Enemy_Patrol connectedPatrol;
+    EnemyAI enemyAI;
+    Enemy enemy;
     public Light connectedLight;
     [Tooltip("The time it takes for the enemy to slow down. Arbitrary values. Acts like health.")]
     public float timeTillStop;
@@ -33,10 +36,11 @@ public class Light_Damage : MonoBehaviour {
         brightnessWeight = 1f - distanceWeight;
 
         connectedDetector = GetComponent<LightDetector>();
-        connectedPatrol = GetComponent<Enemy_Patrol>();
+        enemyAI = GetComponent<EnemyAI>();
+        enemy = GetComponent<Enemy>();
 
         // connect the starting speed to the connected enemy's speed
-        startSpeed = connectedPatrol.speed;
+        startSpeed = enemyAI.speed;
 	}
 	
 	// Update is called once per frame
@@ -55,19 +59,20 @@ public class Light_Damage : MonoBehaviour {
                 // if it still needs to be lerped
                 if (tParam < 1) {
                      tParam += Time.deltaTime / timeTillStop; // This will increment tParam based on Time.deltaTime multiplied by a speed multiplier
-                     connectedPatrol.speed = Mathf.Lerp(startSpeed, endSpeed, tParam);
+                     enemyAI.speed = Mathf.Lerp(startSpeed, endSpeed, tParam);
                 }
 
-                else if(connectedPatrol.speed == 0)
+                else if(enemyAI.speed == 0)
                 {
-                    connectedPatrol.stop();
+                // enemy is frozen
+                Debug.Log("Enemy is frozen!");
                 }
 
 
             // Calculate the appropriate damage
             // Damage the enemy
             currentDamageMult = calculateDamageAtDistance();
-            connectedPatrol.connectedEnemy.DamageEnemy((int) currentDamageMult);
+            enemy.DamageEnemy((int) currentDamageMult);
         }
 
         // ELSE: not in the light

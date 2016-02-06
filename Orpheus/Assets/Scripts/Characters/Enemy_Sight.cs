@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Enemy_Sight : MonoBehaviour {
 
-    public Enemy_Patrol enemy;
     public CharacterController2D player;
 
     void OnTriggerEnter2D(Collider2D other)
@@ -31,6 +30,6 @@ public class Enemy_Sight : MonoBehaviour {
         Debug.Log("leaving");
 
         // the enemy is no longer Alert
-        enemy.curStatus = Enemy_Patrol.Status.ALERT;
+        // enemy.curStatus = Enemy_Patrol.Status.ALERT;
     }
 }
