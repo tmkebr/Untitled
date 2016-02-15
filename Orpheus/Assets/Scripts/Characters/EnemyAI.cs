@@ -25,6 +25,10 @@ public class EnemyAI : MonoBehaviour
     public float speed = 1f;
     public float rotationSpeed = 1f;
     public Transform sight;
+    [Tooltip("How far can the enemy see?")]
+    public float sightRange;
+    [Tooltip("What is the enemy currently doing?")]
+    public Status curStatus;
 
     [HideInInspector]
     public bool pathIsEnded = false;
@@ -39,6 +43,8 @@ public class EnemyAI : MonoBehaviour
     private Vector3 lookDirection;
     private Quaternion lookRotation;
     private Quaternion _facing;
+
+    public enum Status { PATROL, CHASE, ALERT };
 
     void Start()
     {
@@ -98,7 +104,7 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (curTarget == Vector3.zero)
+        if (curTarget == null)
         {
             //TODO: Insert a player search here.
             Debug.Log("No target found... Please enter a target transform");
@@ -127,17 +133,14 @@ public class EnemyAI : MonoBehaviour
         //Direction to the next waypoint
         Vector3 dir = (path.vectorPath[storageWaypoint] - transform.position).normalized;
         dir *= speed * Time.fixedDeltaTime;
+        Debug.Log(path.vectorPath[storageWaypoint] - transform.position);
 
         //Move the AI and flip if needed
         flip((transform.position + dir), transform.position);
-        //pivot(dir);
-        //sight.rotation = Quaternion.LookRotation(Vector3.forward, dir);
-
-        float rot_z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        sight.rotation = Quaternion.Euler(0f, 0f, rot_z);
-
-        // move the enemy
         transform.Translate(dir);
+
+        //float rot_z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        //sight.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
         float dist = Vector3.Distance(transform.position, path.vectorPath[storageWaypoint]);
         if (dist < nextWaypointDistance)
@@ -183,17 +186,6 @@ public class EnemyAI : MonoBehaviour
             transform.localScale = theScale;
         }
     }
-
-    //void getGlobalWaypoints()
-    //{
-    //    // compute global waypoints relative to the local waypoints set
-    //    globalWaypoints = new Vector3[localWaypoints.Length]; // store the waypoints
-    //    // fill the array
-    //    for (int i = 0; i < localWaypoints.Length; i++)
-    //    {
-    //        globalWaypoints[i] = localWaypoints[i] + transform.position;
-    //    }
-    //}
 
     Vector3 chooseRandomWaypoint(Vector3[] wayPoints)
     {
@@ -243,6 +235,23 @@ public class EnemyAI : MonoBehaviour
 
         // return the result
         return wayPoints[closestWaypoint];
+    }
+
+    /// <summary>
+    /// Chases the target
+    /// </summary>
+    public void chase(Transform target)
+    {
+        // The enemy is chasing
+        curStatus = Status.CHASE;
+
+        // chase the target only if it is within the range
+        if (Vector2.Distance(transform.position, target.position) > sightRange)
+        {
+            curTarget = target.position;
+            seeker.StartPath(transform.position, target.position, OnPathComplete);
+        }
+
     }
 
 

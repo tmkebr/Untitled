@@ -4,7 +4,7 @@ using System.Collections;
 
 [RequireComponent(typeof(LightDetector))]
 [RequireComponent(typeof(Enemy))]
-[RequireComponent(typeof(EnemyAI))]
+//[RequireComponent(typeof(EnemyAI))]
 public class Light_Damage : MonoBehaviour {
 
     LightDetector connectedDetector;

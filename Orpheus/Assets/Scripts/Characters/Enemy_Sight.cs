@@ -4,6 +4,12 @@ using System.Collections;
 public class Enemy_Sight : MonoBehaviour {
 
     public CharacterController2D player;
+    public AIPath2D ai;
+
+    void Start()
+    {
+        Debug.Log(ai);
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -11,15 +17,10 @@ public class Enemy_Sight : MonoBehaviour {
         if (!other.gameObject.CompareTag("Player")) return;
 
         Debug.Log("colliding");
-        RaycastHit hit;
         Debug.Log("Here " + other.transform.position);
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
-        {
-            Debug.Log("Point of contact: " + hit.point);
-        }
-
         // the enemy is now alert
-        //enemy.curStatus = Enemy_Patrol.Status.ALERT;
+        ai.chase(player.transform);
+        Debug.Log("Starting chase... ");
     }
 
     void OnTriggerExit2D(Collider2D other)
