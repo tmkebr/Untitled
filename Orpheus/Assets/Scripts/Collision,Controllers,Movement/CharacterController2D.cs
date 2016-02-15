@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CharacterController2D : MonoBehaviour
@@ -19,6 +19,8 @@ public class CharacterController2D : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>(); // stores object's animations
+
+    
 
         facingRight = true;
     }

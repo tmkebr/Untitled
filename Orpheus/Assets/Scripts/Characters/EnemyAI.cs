@@ -23,22 +23,29 @@ public class EnemyAI : MonoBehaviour
 
     //The AI's speed per second
     public float speed = 1f;
+    public float rotationSpeed = 1f;
+    public Transform sight;
 
     [HideInInspector]
     public bool pathIsEnded = false;
 
     // The max distance from the AI to a waypoint for it to continue to the next waypoint
-    public float nextWaypointDistance = 3;
+    public float nextWaypointDistance = .05f;
 
     int storageWaypoint;
 
     bool facingRight;
+
+    private Vector3 lookDirection;
+    private Quaternion lookRotation;
+    private Quaternion _facing;
 
     void Start()
     {
         seeker = GetComponent<Seeker>();
 
         facingRight = true;
+        _facing = sight.rotation;
 
         //getGlobalWaypoints();
         curTarget = globalWaypoints[0];
@@ -103,7 +110,7 @@ public class EnemyAI : MonoBehaviour
         if (path == null)
             return;
 
-        if (currentWaypoint >= path.vectorPath.Count)
+        if (storageWaypoint >= path.vectorPath.Count)
         {
             if (pathIsEnded)
                 return;
@@ -118,19 +125,36 @@ public class EnemyAI : MonoBehaviour
         pathIsEnded = false;
 
         //Direction to the next waypoint
-        Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+        Vector3 dir = (path.vectorPath[storageWaypoint] - transform.position).normalized;
         dir *= speed * Time.fixedDeltaTime;
 
         //Move the AI and flip if needed
-        flip(dir, transform.position);
+        flip((transform.position + dir), transform.position);
+        //pivot(dir);
+        //sight.rotation = Quaternion.LookRotation(Vector3.forward, dir);
+
+        float rot_z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        sight.rotation = Quaternion.Euler(0f, 0f, rot_z);
+
+        // move the enemy
         transform.Translate(dir);
 
-        float dist = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
+        float dist = Vector3.Distance(transform.position, path.vectorPath[storageWaypoint]);
         if (dist < nextWaypointDistance)
         {
-            currentWaypoint++;
+            storageWaypoint++;
             return;
         }
+    }
+
+    // PIVOT
+    // pivots the sight collider towards the movement direction
+    // param: direction of movement
+    void pivot(Vector3 direction)
+    {
+        float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) + 180;
+        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+        sight.rotation = Quaternion.Slerp(sight.rotation, q, Time.deltaTime * rotationSpeed);
     }
 
 
@@ -219,6 +243,24 @@ public class EnemyAI : MonoBehaviour
 
         // return the result
         return wayPoints[closestWaypoint];
+    }
+
+
+    // Draws the patrol points crosshairs
+    void OnDrawGizmos()
+    {
+        if (globalWaypoints != null)
+        {
+            Gizmos.color = Color.red;
+            float size = .3f;
+
+            for (int i = 0; i < globalWaypoints.Length; i++)
+            {
+                Vector3 globalWaypointPos = (Application.isPlaying) ? globalWaypoints[i] : globalWaypoints[i] + transform.position;
+                Gizmos.DrawLine(globalWaypointPos - Vector3.up * size, globalWaypointPos + Vector3.up * size);
+                Gizmos.DrawLine(globalWaypointPos - Vector3.left * size, globalWaypointPos + Vector3.left * size);
+            }
+        }
     }
 
 }

@@ -323,18 +323,20 @@ public class AIPath : MonoBehaviour {
 
 		Vector3 dir = CalculateVelocity (GetFeetPosition());
 
-		//Rotate towards targetDirection (filled in by CalculateVelocity)
-		RotateTowards (targetDirection);
+        //Rotate towards targetDirection (filled in by CalculateVelocity)
+        RotateTowards (targetDirection);
 
-		if (navController != null) {
-		} else if (controller != null) {
-			controller.SimpleMove (dir);
-		} else if (rigid != null) {
-			rigid.AddForce (dir);
-		} else {
-			tr.Translate (dir*Time.deltaTime, Space.World);
-		}
-	}
+        //if (navController != null) {
+        //} else if (controller != null) {
+        //	controller.SimpleMove (dir);
+        //} else if (rigid != null) {
+        //	rigid.AddForce (dir);
+        //} else {
+        //	tr.Translate (dir*Time.deltaTime, Space.World);
+        //}
+
+        tr.Translate(dir * Time.deltaTime, Space.World);
+    }
 
 	/** Point to where the AI is heading.
 	  * Filled in by #CalculateVelocity */
