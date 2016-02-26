@@ -15,7 +15,6 @@ namespace Pathfinding {
 	 * \see https://en.wikipedia.org/wiki/D-ary_heap
 	 */
 	public class BinaryHeapM {
-
 		/** Number of items in the tree */
 		public int numberOfItems;
 
@@ -39,13 +38,13 @@ namespace Pathfinding {
 			public uint F;
 			public PathNode node;
 
-			public Tuple ( uint f, PathNode node ) {
+			public Tuple (uint f, PathNode node) {
 				this.F = f;
 				this.node = node;
 			}
 		}
 
-		public BinaryHeapM ( int numberOfElements ) {
+		public BinaryHeapM (int numberOfElements) {
 			binaryHeap = new Tuple[numberOfElements];
 			numberOfItems = 0;
 		}
@@ -63,33 +62,32 @@ namespace Pathfinding {
 		}
 
 		/** Adds a node to the heap */
-		public void Add(PathNode node) {
-
-			if (node == null) throw new System.ArgumentNullException ("node");
+		public void Add (PathNode node) {
+			if (node == null) throw new System.ArgumentNullException("node");
 
 			if (numberOfItems == binaryHeap.Length) {
-				int newSize = System.Math.Max(binaryHeap.Length+4,(int)System.Math.Round(binaryHeap.Length*growthFactor));
+				int newSize = System.Math.Max(binaryHeap.Length+4, (int)System.Math.Round(binaryHeap.Length*growthFactor));
 				if (newSize > 1<<18) {
-					throw new System.Exception ("Binary Heap Size really large (2^18). A heap size this large is probably the cause of pathfinding running in an infinite loop. " +
+					throw new System.Exception("Binary Heap Size really large (2^18). A heap size this large is probably the cause of pathfinding running in an infinite loop. " +
 						"\nRemove this check (in BinaryHeap.cs) if you are sure that it is not caused by a bug");
 				}
 
 				var tmp = new Tuple[newSize];
 
-				for (int i=0;i<binaryHeap.Length;i++) {
+				for (int i = 0; i < binaryHeap.Length; i++) {
 					tmp[i] = binaryHeap[i];
 				}
 				binaryHeap = tmp;
 			}
 
-			var obj = new Tuple(node.F,node);
+			var obj = new Tuple(node.F, node);
 			binaryHeap[numberOfItems] = obj;
 
 			int bubbleIndex = numberOfItems;
 			uint nodeF = node.F;
 			uint nodeG = node.G;
 
-			while (bubbleIndex != 0 ) {
+			while (bubbleIndex != 0) {
 				int parentIndex = (bubbleIndex-1) / D;
 
 				if (nodeF < binaryHeap[parentIndex].F || (nodeF == binaryHeap[parentIndex].F && nodeG > binaryHeap[parentIndex].node.G)) {
@@ -105,7 +103,7 @@ namespace Pathfinding {
 		}
 
 		/** Returns the node with the lowest F score from the heap */
-		public PathNode Remove() {
+		public PathNode Remove () {
 			numberOfItems--;
 			PathNode returnItem = binaryHeap[0].node;
 
@@ -141,42 +139,42 @@ namespace Pathfinding {
 						swapItem = pd+0;
 					}
 
-					if (D >= 2 && pd+1 <= numberOfItems && (binaryHeap[pd+1].F < swapF  || (SortGScores && binaryHeap[pd+1].F == swapF && binaryHeap[pd+1].node.G < binaryHeap[swapItem].node.G))) {
+					if (D >= 2 && pd+1 <= numberOfItems && (binaryHeap[pd+1].F < swapF || (SortGScores && binaryHeap[pd+1].F == swapF && binaryHeap[pd+1].node.G < binaryHeap[swapItem].node.G))) {
 						swapF = binaryHeap[pd+1].F;
 						swapItem = pd+1;
 					}
 
-					if (D >= 3 && pd+2 <= numberOfItems && (binaryHeap[pd+2].F < swapF  || (SortGScores && binaryHeap[pd+2].F == swapF && binaryHeap[pd+2].node.G < binaryHeap[swapItem].node.G))) {
+					if (D >= 3 && pd+2 <= numberOfItems && (binaryHeap[pd+2].F < swapF || (SortGScores && binaryHeap[pd+2].F == swapF && binaryHeap[pd+2].node.G < binaryHeap[swapItem].node.G))) {
 						swapF = binaryHeap[pd+2].F;
 						swapItem = pd+2;
 					}
 
-					if (D >= 4 && pd+3 <= numberOfItems && (binaryHeap[pd+3].F < swapF  || (SortGScores && binaryHeap[pd+3].F == swapF && binaryHeap[pd+3].node.G < binaryHeap[swapItem].node.G))) {
+					if (D >= 4 && pd+3 <= numberOfItems && (binaryHeap[pd+3].F < swapF || (SortGScores && binaryHeap[pd+3].F == swapF && binaryHeap[pd+3].node.G < binaryHeap[swapItem].node.G))) {
 						swapF = binaryHeap[pd+3].F;
 						swapItem = pd+3;
 					}
 
-					if (D >= 5 && pd+4 <= numberOfItems && binaryHeap[pd+4].F < swapF ) {
+					if (D >= 5 && pd+4 <= numberOfItems && binaryHeap[pd+4].F < swapF) {
 						swapF = binaryHeap[pd+4].F;
 						swapItem = pd+4;
 					}
 
-					if (D >= 6 && pd+5 <= numberOfItems && binaryHeap[pd+5].F < swapF ) {
+					if (D >= 6 && pd+5 <= numberOfItems && binaryHeap[pd+5].F < swapF) {
 						swapF = binaryHeap[pd+5].F;
 						swapItem = pd+5;
 					}
 
-					if (D >= 7 && pd+6 <= numberOfItems && binaryHeap[pd+6].F < swapF ) {
+					if (D >= 7 && pd+6 <= numberOfItems && binaryHeap[pd+6].F < swapF) {
 						swapF = binaryHeap[pd+6].F;
 						swapItem = pd+6;
 					}
 
-					if (D >= 8 && pd+7 <= numberOfItems && binaryHeap[pd+7].F < swapF ) {
+					if (D >= 8 && pd+7 <= numberOfItems && binaryHeap[pd+7].F < swapF) {
 						swapF = binaryHeap[pd+7].F;
 						swapItem = pd+7;
 					}
 
-					if (D >= 9 && pd+8 <= numberOfItems && binaryHeap[pd+8].F < swapF ) {
+					if (D >= 9 && pd+8 <= numberOfItems && binaryHeap[pd+8].F < swapF) {
 						swapF = binaryHeap[pd+8].F;
 						swapItem = pd+8;
 					}
@@ -198,10 +196,10 @@ namespace Pathfinding {
 		}
 
 		void Validate () {
-			for ( int i = 1; i < numberOfItems; i++ ) {
+			for (int i = 1; i < numberOfItems; i++) {
 				int parentIndex = (i-1)/D;
-				if ( binaryHeap[parentIndex].F > binaryHeap[i].F ) {
-					throw new System.Exception ("Invalid state at " + i + ":" +  parentIndex + " ( " + binaryHeap[parentIndex].F + " > " + binaryHeap[i].F + " ) " );
+				if (binaryHeap[parentIndex].F > binaryHeap[i].F) {
+					throw new System.Exception("Invalid state at " + i + ":" +  parentIndex + " ( " + binaryHeap[parentIndex].F + " > " + binaryHeap[i].F + " ) ");
 				}
 			}
 		}
@@ -209,8 +207,7 @@ namespace Pathfinding {
 		/** Rebuilds the heap by trickeling down all items.
 		 * Usually called after the hTarget on a path has been changed */
 		public void Rebuild () {
-
-			for (int i=2;i<numberOfItems;i++) {
+			for (int i = 2; i < numberOfItems; i++) {
 				int bubbleIndex = i;
 				var node = binaryHeap[i];
 				uint nodeF = node.F;
@@ -218,7 +215,6 @@ namespace Pathfinding {
 					int parentIndex = bubbleIndex / D;
 
 					if (nodeF < binaryHeap[parentIndex].F) {
-						//Node tmpValue = binaryHeap[parentIndex];
 						binaryHeap[bubbleIndex] = binaryHeap[parentIndex];
 						binaryHeap[parentIndex] = node;
 						bubbleIndex = parentIndex;
@@ -226,10 +222,7 @@ namespace Pathfinding {
 						break;
 					}
 				}
-
 			}
-
-
 		}
 	}
 }

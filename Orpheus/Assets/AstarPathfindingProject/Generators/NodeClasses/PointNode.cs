@@ -3,7 +3,6 @@ using Pathfinding.Serialization;
 
 namespace Pathfinding {
 	public class PointNode : GraphNode {
-
 		public GraphNode[] connections;
 		public uint[] connectionCosts;
 
@@ -21,18 +20,18 @@ namespace Pathfinding {
 			position = value;
 		}
 
-		public PointNode (AstarPath astar) : base (astar) {
+		public PointNode (AstarPath astar) : base(astar) {
 		}
 
 		public override void GetConnections (GraphNodeDelegate del) {
 			if (connections == null) return;
-			for (int i=0;i<connections.Length;i++) del (connections[i]);
+			for (int i = 0; i < connections.Length; i++) del(connections[i]);
 		}
 
 		public override void ClearConnections (bool alsoReverse) {
 			if (alsoReverse && connections != null) {
-				for (int i=0;i<connections.Length;i++) {
-					connections[i].RemoveConnection (this);
+				for (int i = 0; i < connections.Length; i++) {
+					connections[i].RemoveConnection(this);
 				}
 			}
 
@@ -41,21 +40,21 @@ namespace Pathfinding {
 		}
 
 		public override void UpdateRecursiveG (Path path, PathNode pathNode, PathHandler handler) {
-			UpdateG (path,pathNode);
+			UpdateG(path, pathNode);
 
-			handler.PushNode (pathNode);
+			handler.PushNode(pathNode);
 
-			for (int i=0;i<connections.Length;i++) {
+			for (int i = 0; i < connections.Length; i++) {
 				GraphNode other = connections[i];
-				PathNode otherPN = handler.GetPathNode (other);
+				PathNode otherPN = handler.GetPathNode(other);
 				if (otherPN.parent == pathNode && otherPN.pathID == handler.PathID) {
-					other.UpdateRecursiveG (path, otherPN,handler);
+					other.UpdateRecursiveG(path, otherPN, handler);
 				}
 			}
 		}
 
 		public override bool ContainsConnection (GraphNode node) {
-			for (int i=0;i<connections.Length;i++) if (connections[i] == node) return true;
+			for (int i = 0; i < connections.Length; i++) if (connections[i] == node) return true;
 			return false;
 		}
 
@@ -67,9 +66,8 @@ namespace Pathfinding {
 		 * to get a two-way connection.
 		 */
 		public override void AddConnection (GraphNode node, uint cost) {
-
 			if (connections != null) {
-				for (int i=0;i<connections.Length;i++) {
+				for (int i = 0; i < connections.Length; i++) {
 					if (connections[i] == node) {
 						connectionCosts[i] = cost;
 						return;
@@ -81,7 +79,7 @@ namespace Pathfinding {
 
 			var newconns = new GraphNode[connLength+1];
 			var newconncosts = new uint[connLength+1];
-			for (int i=0;i<connLength;i++) {
+			for (int i = 0; i < connLength; i++) {
 				newconns[i] = connections[i];
 				newconncosts[i] = connectionCosts[i];
 			}
@@ -101,21 +99,19 @@ namespace Pathfinding {
 		 * to this node.
 		 */
 		public override void RemoveConnection (GraphNode node) {
-
 			if (connections == null) return;
 
-			for (int i=0;i<connections.Length;i++) {
+			for (int i = 0; i < connections.Length; i++) {
 				if (connections[i] == node) {
-
 					int connLength = connections.Length;
 
 					var newconns = new GraphNode[connLength-1];
 					var newconncosts = new uint[connLength-1];
-					for (int j=0;j<i;j++) {
+					for (int j = 0; j < i; j++) {
 						newconns[j] = connections[j];
 						newconncosts[j] = connectionCosts[j];
 					}
-					for (int j=i+1;j<connLength;j++) {
+					for (int j = i+1; j < connLength; j++) {
 						newconns[j-1] = connections[j];
 						newconncosts[j-1] = connectionCosts[j];
 					}
@@ -128,45 +124,40 @@ namespace Pathfinding {
 		}
 
 		public override void Open (Path path, PathNode pathNode, PathHandler handler) {
-
 			if (connections == null) return;
 
-			for (int i=0;i<connections.Length;i++) {
+			for (int i = 0; i < connections.Length; i++) {
 				GraphNode other = connections[i];
 
-				if (path.CanTraverse (other)) {
-
-					PathNode pathOther = handler.GetPathNode (other);
+				if (path.CanTraverse(other)) {
+					PathNode pathOther = handler.GetPathNode(other);
 
 					if (pathOther.pathID != handler.PathID) {
-
 						pathOther.parent = pathNode;
 						pathOther.pathID = handler.PathID;
 
 						pathOther.cost = connectionCosts[i];
 
-						pathOther.H = path.CalculateHScore (other);
-						other.UpdateG (path, pathOther);
+						pathOther.H = path.CalculateHScore(other);
+						other.UpdateG(path, pathOther);
 
-						handler.PushNode (pathOther);
+						handler.PushNode(pathOther);
 					} else {
 						//If not we can test if the path from this node to the other one is a better one then the one already used
 						uint tmpCost = connectionCosts[i];
 
 						if (pathNode.G + tmpCost + path.GetTraversalCost(other) < pathOther.G) {
-
 							pathOther.cost = tmpCost;
 							pathOther.parent = pathNode;
 
-							other.UpdateRecursiveG (path, pathOther,handler);
-						}
-						else if (pathOther.G+tmpCost+path.GetTraversalCost(this) < pathNode.G && other.ContainsConnection (this)) {
+							other.UpdateRecursiveG(path, pathOther, handler);
+						} else if (pathOther.G+tmpCost+path.GetTraversalCost(this) < pathNode.G && other.ContainsConnection(this)) {
 							//Or if the path from the other node to this one is better
 
 							pathNode.parent = pathOther;
 							pathNode.cost = tmpCost;
 
-							UpdateRecursiveG (path, pathNode,handler);
+							UpdateRecursiveG(path, pathNode, handler);
 						}
 					}
 				}
@@ -174,31 +165,32 @@ namespace Pathfinding {
 		}
 
 		public override void SerializeNode (GraphSerializationContext ctx) {
-			base.SerializeNode (ctx);
-			ctx.writer.Write (position.x);
-			ctx.writer.Write (position.y);
-			ctx.writer.Write (position.z);
+			base.SerializeNode(ctx);
+			ctx.writer.Write(position.x);
+			ctx.writer.Write(position.y);
+			ctx.writer.Write(position.z);
 		}
 
 		public override void DeserializeNode (GraphSerializationContext ctx) {
-			base.DeserializeNode (ctx);
-			position = new Int3 (ctx.reader.ReadInt32(), ctx.reader.ReadInt32(), ctx.reader.ReadInt32());
+			base.DeserializeNode(ctx);
+			position = new Int3(ctx.reader.ReadInt32(), ctx.reader.ReadInt32(), ctx.reader.ReadInt32());
 		}
 
 		public override void SerializeReferences (GraphSerializationContext ctx) {
 			if (connections == null) {
 				ctx.writer.Write(-1);
 			} else {
-				ctx.writer.Write (connections.Length);
-				for (int i=0;i<connections.Length;i++) {
-					ctx.writer.Write (ctx.GetNodeIdentifier (connections[i]));
-					ctx.writer.Write (connectionCosts[i]);
+				ctx.writer.Write(connections.Length);
+				for (int i = 0; i < connections.Length; i++) {
+					ctx.writer.Write(ctx.GetNodeIdentifier(connections[i]));
+					ctx.writer.Write(connectionCosts[i]);
 				}
 			}
 		}
 
 		public override void DeserializeReferences (GraphSerializationContext ctx) {
 			int count = ctx.reader.ReadInt32();
+
 			if (count == -1) {
 				connections = null;
 				connectionCosts = null;
@@ -206,12 +198,11 @@ namespace Pathfinding {
 				connections = new GraphNode[count];
 				connectionCosts = new uint[count];
 
-				for (int i=0;i<count;i++) {
-					connections[i] = ctx.GetNodeFromIdentifier (ctx.reader.ReadInt32());
+				for (int i = 0; i < count; i++) {
+					connections[i] = ctx.GetNodeFromIdentifier(ctx.reader.ReadInt32());
 					connectionCosts[i] = ctx.reader.ReadUInt32();
 				}
 			}
 		}
 	}
 }
-

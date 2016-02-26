@@ -4,29 +4,26 @@ using Pathfinding.Serialization.JsonFx;
 using Pathfinding.Serialization;
 
 namespace Pathfinding {
-
 	/** Basic point graph.
 	 * \ingroup graphs
-	  * The List graph is the most basic graph structure, it consists of a number of interconnected points in space, waypoints or nodes.\n
-	  * The list graph takes a Transform object as "root", this Transform will be searched for child objects, every child object will be treated as a node.
-	  * It will then check if any connections between the nodes can be made, first it will check if the distance between the nodes isn't too large ( #maxDistance )
-	  * and then it will check if the axis aligned distance isn't too high. The axis aligned distance, named #limits,
-	  * is useful because usually an AI cannot climb very high, but linking nodes far away from each other,
-	  * but on the same Y level should still be possible. #limits and #maxDistance won't affect anything if the values are 0 (zero) though. \n
-	  * Lastly it will check if there are any obstructions between the nodes using
-	  * <a href="http://unity3d.com/support/documentation/ScriptReference/Physics.Raycast.html">raycasting</a> which can optionally be thick.\n
-	  * One thing to think about when using raycasting is to either place the nodes a small
-	  * distance above the ground in your scene or to make sure that the ground is not in the raycast \a mask to avoid the raycast from hitting the ground.\n
-	  * \note Does not support linecast because of obvious reasons.
-	  *
-\shadowimage{pointgraph_graph.png}
-\shadowimage{pointgraph_inspector.png}
-
-	  */
+	 * The List graph is the most basic graph structure, it consists of a number of interconnected points in space, waypoints or nodes.\n
+	 * The list graph takes a Transform object as "root", this Transform will be searched for child objects, every child object will be treated as a node.
+	 * It will then check if any connections between the nodes can be made, first it will check if the distance between the nodes isn't too large ( #maxDistance )
+	 * and then it will check if the axis aligned distance isn't too high. The axis aligned distance, named #limits,
+	 * is useful because usually an AI cannot climb very high, but linking nodes far away from each other,
+	 * but on the same Y level should still be possible. #limits and #maxDistance won't affect anything if the values are 0 (zero) though. \n
+	 * Lastly it will check if there are any obstructions between the nodes using
+	 * <a href="http://unity3d.com/support/documentation/ScriptReference/Physics.Raycast.html">raycasting</a> which can optionally be thick.\n
+	 * One thing to think about when using raycasting is to either place the nodes a small
+	 * distance above the ground in your scene or to make sure that the ground is not in the raycast \a mask to avoid the raycast from hitting the ground.\n
+	 * \note Does not support linecast because of obvious reasons.
+	 *
+	 * \shadowimage{pointgraph_graph.png}
+	 * \shadowimage{pointgraph_inspector.png}
+	 *
+	 */
 	[JsonOptIn]
-	public class PointGraph : NavGraph
-	{
-
+	public class PointGraph : NavGraph {
 		/** Childs of this transform are treated as nodes */
 		[JsonMember]
 		public Transform root;
@@ -92,13 +89,17 @@ namespace Pathfinding {
 		public int nodeCount;
 
 
+		public override int CountNodes () {
+			return nodeCount;
+		}
+
 		public override void GetNodes (GraphNodeDelegateCancelable del) {
 			if (nodes == null) return;
-			for (int i = 0; i < nodeCount && del (nodes[i]); i++) {}
+			for (int i = 0; i < nodeCount && del(nodes[i]); i++) {}
 		}
 
 		public override NNInfo GetNearest (Vector3 position, NNConstraint constraint, GraphNode hint) {
-			return GetNearestForce (position, constraint);
+			return GetNearestForce(position, constraint);
 		}
 
 		public override NNInfo GetNearestForce (Vector3 position, NNConstraint constraint) {
@@ -114,22 +115,22 @@ namespace Pathfinding {
 			float minConstDist = float.PositiveInfinity;
 			GraphNode minConstNode = null;
 
-				for (int i=0;i<nodeCount;i++) {
-					PointNode node = nodes[i];
-					float dist = (position-(Vector3)node.position).sqrMagnitude;
+			for (int i = 0; i < nodeCount; i++) {
+				PointNode node = nodes[i];
+				float dist = (position-(Vector3)node.position).sqrMagnitude;
 
-					if (dist < minDist) {
-						minDist = dist;
-						minNode = node;
-					}
-
-					if (constraint == null || (dist < minConstDist && dist < maxDistSqr && constraint.Suitable (node))) {
-						minConstDist = dist;
-						minConstNode = node;
-					}
+				if (dist < minDist) {
+					minDist = dist;
+					minNode = node;
 				}
 
-			var nnInfo = new NNInfo (minNode);
+				if (constraint == null || (dist < minConstDist && dist < maxDistSqr && constraint.Suitable(node))) {
+					minConstDist = dist;
+					minConstNode = node;
+				}
+			}
+
+			var nnInfo = new NNInfo(minNode);
 
 			nnInfo.constrainedNode = minConstNode;
 
@@ -152,7 +153,7 @@ namespace Pathfinding {
 		 * - inside a callback registered using AstarPath.RegisterSafeUpdate
 		 */
 		public PointNode AddNode (Int3 position) {
-			return AddNode ( new PointNode (active), position );
+			return AddNode(new PointNode(active), position);
 		}
 
 		/** Add a node with the specified type to the graph at the specified position.
@@ -170,22 +171,21 @@ namespace Pathfinding {
 		 *
 		 * \see AstarPath.RegisterSafeUpdate
 		 */
-		public T AddNode<T> (T node, Int3 position) where T : PointNode {
-
-			if ( nodes == null || nodeCount == nodes.Length ) {
-				var nds = new PointNode[nodes != null ? System.Math.Max (nodes.Length+4, nodes.Length*2) : 4];
-				for ( int i = 0; i < nodeCount; i++ ) nds[i] = nodes[i];
+		public T AddNode<T>(T node, Int3 position) where T : PointNode {
+			if (nodes == null || nodeCount == nodes.Length) {
+				var nds = new PointNode[nodes != null ? System.Math.Max(nodes.Length+4, nodes.Length*2) : 4];
+				for (int i = 0; i < nodeCount; i++) nds[i] = nodes[i];
 				nodes = nds;
 			}
 
-			node.SetPosition (position);
+			node.SetPosition(position);
 			node.GraphIndex = graphIndex;
 			node.Walkable = true;
 
 			nodes[nodeCount] = node;
 			nodeCount++;
 
-			AddToLookup ( node );
+			AddToLookup(node);
 
 			return node;
 		}
@@ -193,9 +193,10 @@ namespace Pathfinding {
 		/** Recursively counds children of a transform */
 		public static int CountChildren (Transform tr) {
 			int c = 0;
+
 			foreach (Transform child in tr) {
 				c++;
-				c+= CountChildren (child);
+				c += CountChildren(child);
 			}
 			return c;
 		}
@@ -203,12 +204,12 @@ namespace Pathfinding {
 		/** Recursively adds childrens of a transform as nodes */
 		public void AddChildren (ref int c, Transform tr) {
 			foreach (Transform child in tr) {
-				nodes[c].SetPosition ((Int3)child.position);
+				nodes[c].SetPosition((Int3)child.position);
 				nodes[c].Walkable = true;
 				nodes[c].gameObject = child.gameObject;
 
 				c++;
-				AddChildren (ref c,child);
+				AddChildren(ref c, child);
 			}
 		}
 
@@ -225,49 +226,43 @@ namespace Pathfinding {
 			// A* Pathfinding Project Pro Only
 		}
 
-		public void AddToLookup ( PointNode node ) {
+		public void AddToLookup (PointNode node) {
 			// A* Pathfinding Project Pro Only
 		}
 
-		public override IEnumerable<Progress> ScanInternal () {
-
-			yield return new Progress(0, "Searching for GameObjects");
-
+		public override void ScanInternal (OnScanStatus statusCallback) {
 			if (root == null) {
 				//If there is no root object, try to find nodes with the specified tag instead
-				GameObject[] gos = searchTag != null ? GameObject.FindGameObjectsWithTag (searchTag) : null;
+				GameObject[] gos = searchTag != null ? GameObject.FindGameObjectsWithTag(searchTag) : null;
 
 				if (gos == null) {
 					nodes = new PointNode[0];
 					nodeCount = 0;
-					yield break;
+					return;
 				}
-
-				yield return new Progress(0.1f, "Creating nodes");
 
 				//Create and set up the found nodes
 				nodes = new PointNode[gos.Length];
 				nodeCount = nodes.Length;
 
-				for (int i=0;i<nodes.Length;i++) nodes[i] = new PointNode(active);
+				for (int i = 0; i < nodes.Length; i++) nodes[i] = new PointNode(active);
 
-				for (int i=0;i<gos.Length;i++) {
-					nodes[i].SetPosition ((Int3)gos[i].transform.position);
+				for (int i = 0; i < gos.Length; i++) {
+					nodes[i].SetPosition((Int3)gos[i].transform.position);
 					nodes[i].Walkable = true;
 					nodes[i].gameObject = gos[i].gameObject;
 				}
 			} else {
-
 				//Search the root for children and create nodes for them
 				if (!recursive) {
 					nodes = new PointNode[root.childCount];
 					nodeCount = nodes.Length;
 
-					for (int i=0;i<nodes.Length;i++) nodes[i] = new PointNode(active);
+					for (int i = 0; i < nodes.Length; i++) nodes[i] = new PointNode(active);
 
 					int c = 0;
 					foreach (Transform child in root) {
-						nodes[c].SetPosition ((Int3)child.position);
+						nodes[c].SetPosition((Int3)child.position);
 						nodes[c].Walkable = true;
 						nodes[c].gameObject = child.gameObject;
 
@@ -277,48 +272,40 @@ namespace Pathfinding {
 					nodes = new PointNode[CountChildren(root)];
 					nodeCount = nodes.Length;
 
-					for (int i=0;i<nodes.Length;i++) nodes[i] = new PointNode(active);
-						//CreateNodes (CountChildren (root));
+					for (int i = 0; i < nodes.Length; i++) nodes[i] = new PointNode(active);
+					//CreateNodes (CountChildren (root));
 
 					int startID = 0;
-					AddChildren (ref startID,root);
+					AddChildren(ref startID, root);
 				}
 			}
 
 
 			if (maxDistance >= 0) {
-				// To avoid too many allocations, these lists are reused for each node
-				var connections = new List<PointNode>();
-				var costs = new List<uint>();
+				//To avoid too many allocations, these lists are reused for each node
+				var connections = new List<PointNode>(3);
+				var costs = new List<uint>(3);
 
-				// Report progress every N nodes
-				const int YieldEveryNNodes = 512;
-
-				// Loop through all nodes and add connections to other nodes
+				//Loop through all nodes and add connections to other nodes
 				for (int i = 0; i < nodes.Length; i++) {
-
-					if (i % YieldEveryNNodes == 0) {
-						yield return new Progress(Mathf.Lerp(0.15f, 1, i/(float)nodes.Length), "Connecting nodes");
-					}
-
-					connections.Clear ();
-					costs.Clear ();
+					connections.Clear();
+					costs.Clear();
 
 					PointNode node = nodes[i];
 
-						// Only brute force is available in the free version
-						for (int j=0;j<nodes.Length;j++) {
-							if (i == j) continue;
+					// Only brute force is available in the free version
+					for (int j = 0; j < nodes.Length; j++) {
+						if (i == j) continue;
 
-							PointNode other = nodes[j];
+						PointNode other = nodes[j];
 
-							float dist;
-							if (IsValidConnection (node,other,out dist)) {
-								connections.Add (other);
-								/** \todo Is this equal to .costMagnitude */
-								costs.Add ((uint)Mathf.RoundToInt (dist*Int3.FloatPrecision));
-							}
+						float dist;
+						if (IsValidConnection(node, other, out dist)) {
+							connections.Add(other);
+							/** \todo Is this equal to .costMagnitude */
+							costs.Add((uint)Mathf.RoundToInt(dist*Int3.FloatPrecision));
 						}
+					}
 					node.connections = connections.ToArray();
 					node.connectionCosts = costs.ToArray();
 				}
@@ -327,10 +314,7 @@ namespace Pathfinding {
 
 		/** Returns if the connection between \a a and \a b is valid.
 		 * Checks for obstructions using raycasts (if enabled) and checks for height differences.\n
-		 * As a bonus, it outputs the distance between the nodes too if the connection is valid.
-		 *
-		 * \note This is not the same as checking if node a is connected to node b.
-		 * That should be done using a.ContainsConnection(b)
+		 * As a bonus, it outputs the distance between the nodes too if the connection is valid
 		 */
 		public virtual bool IsValidConnection (GraphNode a, GraphNode b, out float dist) {
 			dist = 0;
@@ -340,40 +324,37 @@ namespace Pathfinding {
 			var dir = (Vector3)(a.position-b.position);
 
 			if (
-				(!Mathf.Approximately (limits.x,0) && Mathf.Abs (dir.x) > limits.x) ||
-				(!Mathf.Approximately (limits.y,0) && Mathf.Abs (dir.y) > limits.y) ||
-				(!Mathf.Approximately (limits.z,0) && Mathf.Abs (dir.z) > limits.z))
-			{
+				(!Mathf.Approximately(limits.x, 0) && Mathf.Abs(dir.x) > limits.x) ||
+				(!Mathf.Approximately(limits.y, 0) && Mathf.Abs(dir.y) > limits.y) ||
+				(!Mathf.Approximately(limits.z, 0) && Mathf.Abs(dir.z) > limits.z)) {
 				return false;
 			}
 
 			dist = dir.magnitude;
 			if (maxDistance == 0 || dist < maxDistance) {
-
 				if (raycast) {
-
-					var ray = new Ray ((Vector3)a.position,(Vector3)(b.position-a.position));
-					var invertRay = new Ray ((Vector3)b.position,(Vector3)(a.position-b.position));
+					var ray = new Ray((Vector3)a.position, (Vector3)(b.position-a.position));
+					var invertRay = new Ray((Vector3)b.position, (Vector3)(a.position-b.position));
 
 					if (use2DPhysics) {
 						if (thickRaycast) {
-							if (!Physics2D.CircleCast (ray.origin, thickRaycastRadius, ray.direction, dist,mask) &&
-							    !Physics2D.CircleCast (invertRay.origin,thickRaycastRadius, invertRay.direction, dist,mask)) {
+							if (!Physics2D.CircleCast(ray.origin, thickRaycastRadius, ray.direction, dist, mask) &&
+								!Physics2D.CircleCast(invertRay.origin, thickRaycastRadius, invertRay.direction, dist, mask)) {
 								return true;
 							}
 						} else {
-							if (!Physics2D.Linecast ((Vector2)(Vector3)a.position,(Vector2)(Vector3)b.position,mask) &&
-							    !Physics2D.Linecast ((Vector2)(Vector3)b.position,(Vector2)(Vector3)a.position,mask)) {
+							if (!Physics2D.Linecast((Vector2)(Vector3)a.position, (Vector2)(Vector3)b.position, mask) &&
+								!Physics2D.Linecast((Vector2)(Vector3)b.position, (Vector2)(Vector3)a.position, mask)) {
 								return true;
 							}
 						}
 					} else {
 						if (thickRaycast) {
-							if (!Physics.SphereCast (ray,thickRaycastRadius,dist,mask) && !Physics.SphereCast (invertRay,thickRaycastRadius,dist,mask)) {
+							if (!Physics.SphereCast(ray, thickRaycastRadius, dist, mask) && !Physics.SphereCast(invertRay, thickRaycastRadius, dist, mask)) {
 								return true;
 							}
 						} else {
-							if (!Physics.Linecast ((Vector3)a.position,(Vector3)b.position,mask) && !Physics.Linecast ((Vector3)b.position,(Vector3)a.position,mask)) {
+							if (!Physics.Linecast((Vector3)a.position, (Vector3)b.position, mask) && !Physics.Linecast((Vector3)b.position, (Vector3)a.position, mask)) {
 								return true;
 							}
 						}
@@ -387,63 +368,61 @@ namespace Pathfinding {
 
 
 		public override void PostDeserialization () {
-			RebuildNodeLookup ();
+			RebuildNodeLookup();
 		}
 
 		public override void RelocateNodes (Matrix4x4 oldMatrix, Matrix4x4 newMatrix) {
-			base.RelocateNodes (oldMatrix, newMatrix);
-			RebuildNodeLookup ();
+			base.RelocateNodes(oldMatrix, newMatrix);
+			RebuildNodeLookup();
 		}
 
 
 #if ASTAR_NO_JSON
-		public override void SerializeSettings ( GraphSerializationContext ctx ) {
+		public override void SerializeSettings (GraphSerializationContext ctx) {
+			base.SerializeSettings(ctx);
 
-			base.SerializeSettings (ctx);
-
-			ctx.SerializeUnityObject (root);
-			ctx.writer.Write (searchTag ?? "");
-			ctx.writer.Write (maxDistance);
-			ctx.SerializeVector3 (limits);
-			ctx.writer.Write (raycast);
-			ctx.writer.Write (use2DPhysics);
-			ctx.writer.Write (thickRaycast);
-			ctx.writer.Write (thickRaycastRadius);
-			ctx.writer.Write (recursive);
-			ctx.writer.Write (autoLinkNodes);
-			ctx.writer.Write ((int)mask);
+			ctx.SerializeUnityObject(root);
+			ctx.writer.Write(searchTag ?? "");
+			ctx.writer.Write(maxDistance);
+			ctx.SerializeVector3(limits);
+			ctx.writer.Write(raycast);
+			ctx.writer.Write(use2DPhysics);
+			ctx.writer.Write(thickRaycast);
+			ctx.writer.Write(thickRaycastRadius);
+			ctx.writer.Write(recursive);
+			ctx.writer.Write(autoLinkNodes);
+			ctx.writer.Write((int)mask);
 		}
 
-		public override void DeserializeSettings ( GraphSerializationContext ctx ) {
+		public override void DeserializeSettings (GraphSerializationContext ctx) {
+			base.DeserializeSettings(ctx);
 
-			base.DeserializeSettings (ctx);
-
-			root = ctx.DeserializeUnityObject () as Transform;
-			searchTag = ctx.reader.ReadString ();
-			maxDistance = ctx.reader.ReadSingle ();
-			limits = ctx.DeserializeVector3 ();
-			raycast = ctx.reader.ReadBoolean ();
-			use2DPhysics = ctx.reader.ReadBoolean ();
-			thickRaycast = ctx.reader.ReadBoolean ();
-			thickRaycastRadius = ctx.reader.ReadSingle ();
-			recursive = ctx.reader.ReadBoolean ();
-			autoLinkNodes = ctx.reader.ReadBoolean ();
-			mask = (LayerMask)ctx.reader.ReadInt32 ();
+			root = ctx.DeserializeUnityObject() as Transform;
+			searchTag = ctx.reader.ReadString();
+			maxDistance = ctx.reader.ReadSingle();
+			limits = ctx.DeserializeVector3();
+			raycast = ctx.reader.ReadBoolean();
+			use2DPhysics = ctx.reader.ReadBoolean();
+			thickRaycast = ctx.reader.ReadBoolean();
+			thickRaycastRadius = ctx.reader.ReadSingle();
+			recursive = ctx.reader.ReadBoolean();
+			autoLinkNodes = ctx.reader.ReadBoolean();
+			mask = (LayerMask)ctx.reader.ReadInt32();
 		}
 #endif
 
 		public override void SerializeExtraInfo (GraphSerializationContext ctx) {
 			// Serialize node data
 
-			if (nodes == null) ctx.writer.Write (-1);
+			if (nodes == null) ctx.writer.Write(-1);
 
 			// Length prefixed array of nodes
-			ctx.writer.Write (nodeCount);
-			for (int i=0;i<nodeCount;i++) {
+			ctx.writer.Write(nodeCount);
+			for (int i = 0; i < nodeCount; i++) {
 				// -1 indicates a null field
-				if (nodes[i] == null) ctx.writer.Write (-1);
+				if (nodes[i] == null) ctx.writer.Write(-1);
 				else {
-					ctx.writer.Write (0);
+					ctx.writer.Write(0);
 					nodes[i].SerializeNode(ctx);
 				}
 			}
@@ -451,6 +430,7 @@ namespace Pathfinding {
 
 		public override void DeserializeExtraInfo (GraphSerializationContext ctx) {
 			int count = ctx.reader.ReadInt32();
+
 			if (count == -1) {
 				nodes = null;
 				return;
@@ -459,7 +439,7 @@ namespace Pathfinding {
 			nodes = new PointNode[count];
 			nodeCount = count;
 
-			for (int i=0;i<nodes.Length;i++) {
+			for (int i = 0; i < nodes.Length; i++) {
 				if (ctx.reader.ReadInt32() == -1) continue;
 				nodes[i] = new PointNode(active);
 				nodes[i].DeserializeNode(ctx);

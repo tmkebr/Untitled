@@ -48,7 +48,7 @@ public class AIPath2D : MonoBehaviour
     public Status curStatus;
 
     public float rotationSpeed;
-    public float sightRange;
+    public float sightRange = 5f;
 
     /** Enables or disables searching for paths.
 	 * Setting this to false does not stop any active path requests from being calculated or stop it from continuing to follow the current path.
@@ -375,13 +375,19 @@ public class AIPath2D : MonoBehaviour
 
     void walk()
     {
+
+        // calculate the velocity of movement
         float velocity = CalculateVelocity(tr.position);
+
+        // flip the enemy if needed
         flip(targetPoint, transform.position);
 
-        //Vector3 difference = targetPoint - new Vector2(sight.position.x, sight.position.y);
-        //float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        //sight.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
+        // angle the sight collider towards the direction of movement
+        Vector3 difference = targetPoint - new Vector2(sight.position.x, sight.position.y);
+        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        sight.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
 
+        // move the enemy
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPoint.x, targetPoint.y, transform.position.z), velocity * Time.smoothDeltaTime);
     }
 
@@ -487,7 +493,7 @@ public class AIPath2D : MonoBehaviour
         if (magn == 0)
             return a;
 
-        float closest = AstarMath.Clamp01 (AstarMath.NearestPointFactor (a, b, p));
+        float closest = Mathf.Clamp01 (VectorMath.ClosestPointOnLineFactor (a, b, p));
         Vector2 point = (b - a) * closest + a;
         float distance = (point - p).magnitude;
 
@@ -560,16 +566,14 @@ public class AIPath2D : MonoBehaviour
             facingRight = false;
 
 
-            theScale.x *= -1;
-            transform.localScale = theScale;
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
         else if (newPosition.x > oldPosition.x && !facingRight)
         {
             // the enemy is now facing right
             facingRight = true;
 
-            theScale.x *= -1;
-            transform.localScale = theScale;
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
@@ -604,7 +608,7 @@ public class AIPath2D : MonoBehaviour
         // alert();
     }
 
-    void alert()
+    public void alert()
     {
         curStatus = Status.PATROL;
         this.OnDisable();

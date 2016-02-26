@@ -5,12 +5,12 @@ using UnityEngine;
 namespace Pathfinding {
 	/** Contains useful functions for working with paths and nodes.
 	 * This class works a lot with the Node class, a useful function to get nodes is AstarPath.GetNearest.
-	  * \see AstarPath.GetNearest
-	  * \see Pathfinding.Utils.GraphUpdateUtilities
-	  * \since Added in version 3.2
-	  * \ingroup utils
-	  *
-	  */
+	 * \see AstarPath.GetNearest
+	 * \see Pathfinding.Utils.GraphUpdateUtilities
+	 * \since Added in version 3.2
+	 * \ingroup utils
+	 *
+	 */
 	public static class PathUtilities {
 		/** Returns if there is a walkable path from \a n1 to \a n2.
 		 * If you are making changes to the graph, areas must first be recaculated using FloodFill()
@@ -35,7 +35,7 @@ namespace Pathfinding {
 			if (nodes.Count == 0) return true;
 
 			uint area = nodes[0].Area;
-			for (int i=0;i<nodes.Count;i++) if (!nodes[i].Walkable || nodes[i].Area != area) return false;
+			for (int i = 0; i < nodes.Count; i++) if (!nodes[i].Walkable || nodes[i].Area != area) return false;
 			return true;
 		}
 
@@ -67,7 +67,7 @@ namespace Pathfinding {
 			bool result = true;
 
 			// Make sure that the first node can reach all other nodes
-			for (int i=1;i<nodes.Count;i++) {
+			for (int i = 1; i < nodes.Count; i++) {
 				if (!reachable.Contains(nodes[i])) {
 					result = false;
 					break;
@@ -101,42 +101,42 @@ namespace Pathfinding {
 		 * For better memory management the returned list should be pooled, see Pathfinding.Util.ListPool
 		 */
 		public static List<GraphNode> GetReachableNodes (GraphNode seed, int tagMask = -1) {
-			Stack<GraphNode> stack = StackPool<GraphNode>.Claim ();
-			List<GraphNode> list = ListPool<GraphNode>.Claim ();
+			Stack<GraphNode> stack = StackPool<GraphNode>.Claim();
+			List<GraphNode> list = ListPool<GraphNode>.Claim();
 
 			/** \todo Pool */
 			var map = new HashSet<GraphNode>();
 
 			GraphNodeDelegate callback;
 			if (tagMask == -1) {
-				callback = delegate (GraphNode node) {
-					if (node.Walkable && map.Add (node)) {
-						list.Add (node);
-						stack.Push (node);
+				callback = delegate(GraphNode node) {
+					if (node.Walkable && map.Add(node)) {
+						list.Add(node);
+						stack.Push(node);
 					}
 				};
 			} else {
-				callback = delegate (GraphNode node) {
-					if (node.Walkable && ((tagMask >> (int)node.Tag) & 0x1) != 0 && map.Add (node)) {
-						list.Add (node);
-						stack.Push (node);
+				callback = delegate(GraphNode node) {
+					if (node.Walkable && ((tagMask >> (int)node.Tag) & 0x1) != 0 && map.Add(node)) {
+						list.Add(node);
+						stack.Push(node);
 					}
 				};
 			}
 
-			callback (seed);
+			callback(seed);
 
 			while (stack.Count > 0) {
-				stack.Pop ().GetConnections (callback);
+				stack.Pop().GetConnections(callback);
 			}
 
-			StackPool<GraphNode>.Release (stack);
+			StackPool<GraphNode>.Release(stack);
 
 			return list;
 		}
 
 		static Queue<GraphNode> BFSQueue;
-		static Dictionary<GraphNode,int> BFSMap;
+		static Dictionary<GraphNode, int> BFSMap;
 
 		/** Returns all nodes up to a given node-distance from the seed node.
 		 * This function performs a BFS (breadth-first-search) or flood fill of the graph and returns all nodes within a specified node distance which can be reached from
@@ -162,55 +162,54 @@ namespace Pathfinding {
 		 * \warning This method is not thread safe. Only use it from the Unity thread (i.e normal game code).
 		 */
 		public static List<GraphNode> BFS (GraphNode seed, int depth, int tagMask = -1) {
-
 			BFSQueue = BFSQueue ?? new Queue<GraphNode>();
 			var que = BFSQueue;
 
-			BFSMap = BFSMap ?? new Dictionary<GraphNode,int>();
+			BFSMap = BFSMap ?? new Dictionary<GraphNode, int>();
 			var map = BFSMap;
 
 			// Even though we clear at the end of this function, it is good to
 			// do it here as well in case the previous invocation of the method
 			// threw an exception for some reason
 			// and didn't clear the que and map
-			que.Clear ();
-			map.Clear ();
+			que.Clear();
+			map.Clear();
 
-			List<GraphNode> result = ListPool<GraphNode>.Claim ();
+			List<GraphNode> result = ListPool<GraphNode>.Claim();
 
 			int currentDist = -1;
 			GraphNodeDelegate callback;
 			if (tagMask == -1) {
 				callback = node => {
-					if (node.Walkable && !map.ContainsKey (node)) {
-						map.Add (node, currentDist+1);
-						result.Add (node);
-						que.Enqueue (node);
+					if (node.Walkable && !map.ContainsKey(node)) {
+						map.Add(node, currentDist+1);
+						result.Add(node);
+						que.Enqueue(node);
 					}
 				};
 			} else {
 				callback = node => {
-					if (node.Walkable && ((tagMask >> (int)node.Tag) & 0x1) != 0 && !map.ContainsKey (node)) {
-						map.Add (node, currentDist+1);
-						result.Add (node);
-						que.Enqueue (node);
+					if (node.Walkable && ((tagMask >> (int)node.Tag) & 0x1) != 0 && !map.ContainsKey(node)) {
+						map.Add(node, currentDist+1);
+						result.Add(node);
+						que.Enqueue(node);
 					}
 				};
 			}
 
-			callback (seed);
+			callback(seed);
 
-			while (que.Count > 0 ) {
-				GraphNode n = que.Dequeue ();
+			while (que.Count > 0) {
+				GraphNode n = que.Dequeue();
 				currentDist = map[n];
 
 				if (currentDist >= depth) break;
 
-				n.GetConnections (callback);
+				n.GetConnections(callback);
 			}
 
-			que.Clear ();
-			map.Clear ();
+			que.Clear();
+			map.Clear();
 
 			return result;
 		}
@@ -227,7 +226,6 @@ namespace Pathfinding {
 		 * \see Pathfinding.Util.ListPool
 		 */
 		public static List<Vector3> GetSpiralPoints (int count, float clearance) {
-
 			List<Vector3> pts = ListPool<Vector3>.Claim(count);
 
 			// The radius of the smaller circle used for generating the involute of a circle
@@ -236,21 +234,21 @@ namespace Pathfinding {
 			float t = 0;
 
 
-			pts.Add (InvoluteOfCircle(a, t));
+			pts.Add(InvoluteOfCircle(a, t));
 
-			for (int i=0;i<count;i++) {
+			for (int i = 0; i < count; i++) {
 				Vector3 prev = pts[pts.Count-1];
 
 				// d = -t0/2 + sqrt( t0^2/4 + 2d/a )
 				// Minimum angle (radians) which would create an arc distance greater than clearance
-				float d = -t/2 + Mathf.Sqrt (t*t/4 + 2*clearance/a);
+				float d = -t/2 + Mathf.Sqrt(t*t/4 + 2*clearance/a);
 
 				// Binary search for separating this point and the previous one
 				float mn = t + d;
 				float mx = t + 2*d;
 				while (mx - mn > 0.01f) {
 					float mid = (mn + mx)/2;
-					Vector3 p = InvoluteOfCircle (a, mid);
+					Vector3 p = InvoluteOfCircle(a, mid);
 					if ((p - prev).sqrMagnitude < clearance*clearance) {
 						mn = mid;
 					} else {
@@ -258,7 +256,7 @@ namespace Pathfinding {
 					}
 				}
 
-				pts.Add ( InvoluteOfCircle (a, mx) );
+				pts.Add(InvoluteOfCircle(a, mx));
 				t = mx;
 			}
 
@@ -277,15 +275,15 @@ namespace Pathfinding {
 		 * The average of the points will be found and then that will be treated as the group center.
 		 */
 		public static void GetPointsAroundPointWorld (Vector3 p, IRaycastableGraph g, List<Vector3> previousPoints, float radius, float clearanceRadius) {
-			if ( previousPoints.Count == 0 ) return;
+			if (previousPoints.Count == 0) return;
 
 			Vector3 avg = Vector3.zero;
-			for ( int i = 0; i < previousPoints.Count; i++ ) avg += previousPoints[i];
+			for (int i = 0; i < previousPoints.Count; i++) avg += previousPoints[i];
 			avg /= previousPoints.Count;
 
-			for ( int i = 0; i < previousPoints.Count; i++ ) previousPoints[i] -= avg;
+			for (int i = 0; i < previousPoints.Count; i++) previousPoints[i] -= avg;
 
-			GetPointsAroundPoint ( p, g, previousPoints, radius, clearanceRadius );
+			GetPointsAroundPoint(p, g, previousPoints, radius, clearanceRadius);
 		}
 
 		/** Will calculate a number of points around \a p which are on the graph and are separated by \a clearance from each other.
@@ -303,14 +301,13 @@ namespace Pathfinding {
 		 * \param clearanceRadius The points will if possible be at least this distance from each other.
 		 */
 		public static void GetPointsAroundPoint (Vector3 p, IRaycastableGraph g, List<Vector3> previousPoints, float radius, float clearanceRadius) {
-
-			if (g == null) throw new System.ArgumentNullException ("g");
+			if (g == null) throw new System.ArgumentNullException("g");
 
 			var graph = g as NavGraph;
 
-			if (graph == null) throw new System.ArgumentException ("g is not a NavGraph");
+			if (graph == null) throw new System.ArgumentException("g is not a NavGraph");
 
-			NNInfo nn = graph.GetNearestForce (p, NNConstraint.Default);
+			NNInfo nn = graph.GetNearestForce(p, NNConstraint.Default);
 			p = nn.clampedPosition;
 
 			if (nn.node == null) {
@@ -320,11 +317,10 @@ namespace Pathfinding {
 
 
 			// Make sure the enclosing circle has a radius which can pack circles with packing density 0.5
-			radius = Mathf.Max (radius, 1.4142f*clearanceRadius*Mathf.Sqrt(previousPoints.Count));//Mathf.Sqrt(previousPoints.Count*clearanceRadius*2));
+			radius = Mathf.Max(radius, 1.4142f*clearanceRadius*Mathf.Sqrt(previousPoints.Count)); //Mathf.Sqrt(previousPoints.Count*clearanceRadius*2));
 			clearanceRadius *= clearanceRadius;
 
-			for (int i=0;i<previousPoints.Count;i++) {
-
+			for (int i = 0; i < previousPoints.Count; i++) {
 				Vector3 dir = previousPoints[i];
 				float magn = dir.magnitude;
 
@@ -339,17 +335,16 @@ namespace Pathfinding {
 
 				int tests = 0;
 				do {
-
 					Vector3 pt = p + dir;
 
-					if (g.Linecast (p, pt, nn.node, out hit)) {
+					if (g.Linecast(p, pt, nn.node, out hit)) {
 						pt = hit.point;
 					}
 
-					for (float q = 0.1f; q <= 1.0f; q+= 0.05f) {
+					for (float q = 0.1f; q <= 1.0f; q += 0.05f) {
 						Vector3 qt = (pt - p)*q + p;
 						worked = true;
-						for (int j=0;j<i;j++) {
+						for (int j = 0; j < i; j++) {
 							if ((previousPoints[j] - qt).sqrMagnitude < clearanceRadius) {
 								worked = false;
 								break;
@@ -363,21 +358,19 @@ namespace Pathfinding {
 					}
 
 					if (!worked) {
-
 						// Abort after 8 tries
 						if (tests > 8) {
 							worked = true;
 						} else {
 							clearanceRadius *= 0.9f;
 							// This will pick points in 2D closer to the edge of the circle with a higher probability
-							dir = Random.onUnitSphere * Mathf.Lerp (newMagn, radius, tests / 5);
+							dir = Random.onUnitSphere * Mathf.Lerp(newMagn, radius, tests / 5);
 							dir.y = 0;
 							tests++;
 						}
 					}
 				} while (!worked);
 			}
-
 		}
 
 		/** Returns randomly selected points on the specified nodes with each point being separated by \a clearanceRadius from each other.
@@ -387,9 +380,8 @@ namespace Pathfinding {
 		 * clearanceRadius will be reduced if no valid points can be found.
 		 */
 		public static List<Vector3> GetPointsOnNodes (List<GraphNode> nodes, int count, float clearanceRadius = 0) {
-
-			if (nodes == null) throw new System.ArgumentNullException ("nodes");
-			if (nodes.Count == 0) throw new System.ArgumentException ("no nodes passed");
+			if (nodes == null) throw new System.ArgumentNullException("nodes");
+			if (nodes.Count == 0) throw new System.ArgumentException("no nodes passed");
 
 			var rnd = new System.Random();
 
@@ -399,38 +391,36 @@ namespace Pathfinding {
 			clearanceRadius *= clearanceRadius;
 
 			if (nodes[0] is TriangleMeshNode
-			    || nodes[0] is GridNode
-			    ) {
+				|| nodes[0] is GridNode
+				) {
 				//Assume all nodes are triangle nodes or grid nodes
 
 				List<float> accs = ListPool<float>.Claim(nodes.Count);
 
 				float tot = 0;
 
-				for (int i=0;i<nodes.Count;i++) {
+				for (int i = 0; i < nodes.Count; i++) {
 					var tnode = nodes[i] as TriangleMeshNode;
 					if (tnode != null) {
 						/** \bug Doesn't this need to be divided by 2? */
-						float a = System.Math.Abs(Polygon.TriangleArea2(tnode.GetVertex(0), tnode.GetVertex(1), tnode.GetVertex(2)));
+						float a = System.Math.Abs(VectorMath.SignedTriangleAreaTimes2XZ(tnode.GetVertex(0), tnode.GetVertex(1), tnode.GetVertex(2)));
 						tot += a;
-						accs.Add (tot);
-					}
-					 else {
+						accs.Add(tot);
+					} else {
 						var gnode = nodes[i] as GridNode;
 
 						if (gnode != null) {
-							GridGraph gg = GridNode.GetGridGraph (gnode.GraphIndex);
+							GridGraph gg = GridNode.GetGridGraph(gnode.GraphIndex);
 							float a = gg.nodeSize*gg.nodeSize;
 							tot += a;
-							accs.Add (tot);
+							accs.Add(tot);
 						} else {
 							accs.Add(tot);
 						}
 					}
 				}
 
-				for (int i=0;i<count;i++) {
-
+				for (int i = 0; i < count; i++) {
 					//Pick point
 					int testCount = 0;
 					int testLimit = 10;
@@ -474,22 +464,21 @@ namespace Pathfinding {
 							var gnode = nodes[v] as GridNode;
 
 							if (gnode != null) {
-								GridGraph gg = GridNode.GetGridGraph (gnode.GraphIndex);
+								GridGraph gg = GridNode.GetGridGraph(gnode.GraphIndex);
 
 								float v1 = (float)rnd.NextDouble();
 								float v2 = (float)rnd.NextDouble();
 								p = (Vector3)gnode.position + new Vector3(v1 - 0.5f, 0, v2 - 0.5f) * gg.nodeSize;
-							} else
-							{
+							} else {
 								//Point nodes have no area, so we break directly instead
-								pts.Add ((Vector3)nodes[v].position);
+								pts.Add((Vector3)nodes[v].position);
 								break;
 							}
 						}
 
 						// Test if it is some distance away from the other points
 						if (clearanceRadius > 0) {
-							for (int j=0;j<pts.Count;j++) {
+							for (int j = 0; j < pts.Count; j++) {
 								if ((pts[j]-p).sqrMagnitude < clearanceRadius) {
 									worked = false;
 									break;
@@ -498,7 +487,7 @@ namespace Pathfinding {
 						}
 
 						if (worked) {
-							pts.Add (p);
+							pts.Add(p);
 							break;
 						}
 						testCount++;
@@ -506,10 +495,9 @@ namespace Pathfinding {
 				}
 
 				ListPool<float>.Release(accs);
-
 			} else {
-				for (int i=0;i<count;i++) {
-					pts.Add ((Vector3)nodes[rnd.Next (nodes.Count)].position);
+				for (int i = 0; i < count; i++) {
+					pts.Add((Vector3)nodes[rnd.Next(nodes.Count)].position);
 				}
 			}
 
@@ -517,4 +505,3 @@ namespace Pathfinding {
 		}
 	}
 }
-

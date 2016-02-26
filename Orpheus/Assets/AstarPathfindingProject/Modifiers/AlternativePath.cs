@@ -15,22 +15,16 @@ namespace Pathfinding {
 	 *
 	 * \ingroup modifiers
 	 */
+	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_alternative_path.php")]
 	public class AlternativePath : MonoModifier {
-
 	#if UNITY_EDITOR
-		[UnityEditor.MenuItem ("CONTEXT/Seeker/Add Alternative Path Modifier")]
+		[UnityEditor.MenuItem("CONTEXT/Seeker/Add Alternative Path Modifier")]
 		public static void AddComp (UnityEditor.MenuCommand command) {
-			(command.context as Component).gameObject.AddComponent (typeof(AlternativePath));
+			(command.context as Component).gameObject.AddComponent(typeof(AlternativePath));
 		}
 	#endif
 
-		public override ModifierData input {
-			get { return ModifierData.Original; }
-		}
-
-		public override ModifierData output {
-			get { return ModifierData.All; }
-		}
+		public override int Order { get { return 10; } }
 
 		/** How much penalty (weight) to apply to nodes */
 		public int penalty = 1000;
@@ -49,20 +43,19 @@ namespace Pathfinding {
 
 		bool waitingForApply;
 
-		readonly System.Object lockObject = new System.Object ();
+		readonly System.Object lockObject = new System.Object();
 
 		/** A random object */
-		System.Random rnd = new System.Random ();
+		System.Random rnd = new System.Random();
 
 		/** A random object generating random seeds for other random objects */
-		readonly System.Random seedGenerator = new System.Random ();
+		readonly System.Random seedGenerator = new System.Random();
 
 		bool destroyed;
 
 		/** The nodes waiting to have their penalty changed */
 		GraphNode[] toBeApplied;
-		public override void Apply (Path p, ModifierData source) {
-
+		public override void Apply (Path p) {
 			if (this == null) return;
 
 			lock (lockObject) {
@@ -90,26 +83,27 @@ namespace Pathfinding {
 			lock (lockObject) {
 				AstarPath.OnPathPreSearch -= ClearOnDestroy;
 				waitingForApply = false;
-				InversePrevious ();
+				InversePrevious();
 			}
 		}
 
 		void InversePrevious () {
 			int seed = prevSeed;
-			rnd = new System.Random (seed);
+
+			rnd = new System.Random(seed);
 
 			//Add previous penalty
 			if (prevNodes != null) {
 				bool warnPenalties = false;
-				int rndStart = rnd.Next (randomStep);
-				for (int i=rndStart;i<prevNodes.Length;i+= rnd.Next (1,randomStep)) {
+				int rndStart = rnd.Next(randomStep);
+				for (int i = rndStart; i < prevNodes.Length; i += rnd.Next(1, randomStep)) {
 					if (prevNodes[i].Penalty < prevPenalty) {
 						warnPenalties = true;
 					}
 					prevNodes[i].Penalty = (uint)(prevNodes[i].Penalty-prevPenalty);
 				}
 				if (warnPenalties) {
-					Debug.LogWarning ("Penalty for some nodes has been reset while this modifier was active. Penalties might not be correctly set.");
+					Debug.LogWarning("Penalty for some nodes has been reset while this modifier was active. Penalties might not be correctly set.");
 				}
 			}
 		}
@@ -119,17 +113,17 @@ namespace Pathfinding {
 				waitingForApply = false;
 				AstarPath.OnPathPreSearch -= ApplyNow;
 
-				InversePrevious ();
+				InversePrevious();
 
 				if (destroyed) return;
 
 				//Calculate a new seed
-				int seed = seedGenerator.Next ();
-				rnd = new System.Random (seed);
+				int seed = seedGenerator.Next();
+				rnd = new System.Random(seed);
 
 				if (toBeApplied != null) {
-					int rndStart = rnd.Next (randomStep);
-					for (int i=rndStart;i<toBeApplied.Length;i+= rnd.Next (1,randomStep)) {
+					int rndStart = rnd.Next(randomStep);
+					for (int i = rndStart; i < toBeApplied.Length; i += rnd.Next(1, randomStep)) {
 						toBeApplied[i].Penalty = (uint)(toBeApplied[i].Penalty+penalty);
 					}
 				}

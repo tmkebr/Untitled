@@ -14,5 +14,4 @@ namespace Pathfinding {
 	public class BBTree {
 		public void OnDrawGizmos () {}
 	}
-
 }

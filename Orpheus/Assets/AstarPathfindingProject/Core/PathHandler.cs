@@ -77,22 +77,21 @@ namespace Pathfinding {
 		private uint h;
 
 		/** G score, cost to get to this node */
-		public uint G {get { return g;} set{g = value;}}
+		public uint G { get { return g; } set { g = value; } }
 
 		/** H score, estimated cost to get to to the target */
-		public uint H {get { return h;} set{h = value;}}
+		public uint H { get { return h; } set { h = value; } }
 
 		/** F score. H score + G score */
-		public uint F {get { return g+h;}}
+		public uint F { get { return g+h; } }
 	}
 
 	/** Handles thread specific path data.
 	 */
 	public class PathHandler {
-
 		/** Current PathID.
-		  * \see #PathID
-		  */
+		 * \see #PathID
+		 */
 		private ushort pathID;
 
 		public readonly int threadID;
@@ -105,16 +104,16 @@ namespace Pathfinding {
 		private BinaryHeapM heap = new BinaryHeapM(128);
 
 		/** ID for the path currently being calculated or last path that was calculated */
-		public ushort PathID {get { return pathID; }}
+		public ushort PathID { get { return pathID; } }
 
 		/** Push a node to the heap */
 		public void PushNode (PathNode node) {
-			heap.Add (node);
+			heap.Add(node);
 		}
 
 		/** Pop the node with the lowest F score from the heap */
 		public PathNode PopNode () {
-			return heap.Remove ();
+			return heap.Remove();
 		}
 
 		/** The internal heap.
@@ -133,7 +132,7 @@ namespace Pathfinding {
 		 * that requires rebuilding the heap to keep it correctly sorted.
 		 */
 		public void RebuildHeap () {
-			heap.Rebuild ();
+			heap.Rebuild();
 		}
 
 		/** True if the heap is empty */
@@ -156,7 +155,7 @@ namespace Pathfinding {
 		private bool[] bucketNew = new bool[0];
 		private bool[] bucketCreated = new bool[0];
 
-		private Stack<PathNode[]> bucketCache = new Stack<PathNode[]> ();
+		private Stack<PathNode[]> bucketCache = new Stack<PathNode[]>();
 
 		private int filledBuckets;
 
@@ -168,17 +167,16 @@ namespace Pathfinding {
 		public PathHandler (int threadID, int totalThreadCount) {
 			this.threadID = threadID;
 			this.totalThreadCount = totalThreadCount;
-
 		}
 
 		public void InitializeForPath (Path p) {
 			pathID = p.pathID;
-			heap.Clear ();
+			heap.Clear();
 		}
 
 		/** Internal method to clean up node data */
 		public void DestroyNode (GraphNode node) {
-			PathNode pn = GetPathNode (node);
+			PathNode pn = GetPathNode(node);
 
 			//Clean up reference to help GC
 			pn.node = null;
@@ -187,7 +185,6 @@ namespace Pathfinding {
 
 		/** Internal method to initialize node data */
 		public void InitializeNode (GraphNode node) {
-
 			//Get the index of the node
 			int ind = node.NodeIndex;
 
@@ -201,14 +198,14 @@ namespace Pathfinding {
 				// Current size + 2 or
 				// bucketNumber+1
 
-				var newNodes = new PathNode[System.Math.Max (System.Math.Max (nodes.Length*3 / 2,bucketNumber+1), nodes.Length+2)][];
-				for (int i=0;i<nodes.Length;i++) newNodes[i] = nodes[i];
+				var newNodes = new PathNode[System.Math.Max(System.Math.Max(nodes.Length*3 / 2, bucketNumber+1), nodes.Length+2)][];
+				for (int i = 0; i < nodes.Length; i++) newNodes[i] = nodes[i];
 
 				var newBucketNew = new bool[newNodes.Length];
-				for (int i=0;i<nodes.Length;i++) newBucketNew[i] = bucketNew[i];
+				for (int i = 0; i < nodes.Length; i++) newBucketNew[i] = bucketNew[i];
 
 				var newBucketCreated = new bool[newNodes.Length];
-				for (int i=0;i<nodes.Length;i++) newBucketCreated[i] = bucketCreated[i];
+				for (int i = 0; i < nodes.Length; i++) newBucketCreated[i] = bucketCreated[i];
 
 				nodes = newNodes;
 				bucketNew = newBucketNew;
@@ -222,7 +219,7 @@ namespace Pathfinding {
 					ns = bucketCache.Pop();
 				} else {
 					ns = new PathNode[BucketSize];
-					for (int i=0;i<BucketSize;i++) ns[i] = new PathNode ();
+					for (int i = 0; i < BucketSize; i++) ns[i] = new PathNode();
 				}
 				nodes[bucketNumber] = ns;
 
@@ -237,7 +234,7 @@ namespace Pathfinding {
 			pn.node = node;
 		}
 
-		public PathNode GetPathNode ( int nodeIndex ) {
+		public PathNode GetPathNode (int nodeIndex) {
 			return nodes[nodeIndex >> BucketSizeLog2][nodeIndex & BucketIndexMask];
 		}
 
@@ -245,7 +242,7 @@ namespace Pathfinding {
 		 * The PathNode is specific to this PathHandler since multiple PathHandlers
 		 * are used at the same time if multithreading is enabled.
 		 */
-		public PathNode GetPathNode ( GraphNode node ) {
+		public PathNode GetPathNode (GraphNode node) {
 			// Get the index of the node
 			int ind = node.NodeIndex;
 
@@ -256,12 +253,10 @@ namespace Pathfinding {
 		 * \see Pathfinding.PathNode.pathID
 		 */
 		public void ClearPathIDs () {
-
-			for (int i=0;i<nodes.Length;i++) {
+			for (int i = 0; i < nodes.Length; i++) {
 				PathNode[] ns = nodes[i];
-				if (ns != null) for (int j=0;j<BucketSize;j++) ns[j].pathID = 0;
+				if (ns != null) for (int j = 0; j < BucketSize; j++) ns[j].pathID = 0;
 			}
 		}
 	}
 }
-

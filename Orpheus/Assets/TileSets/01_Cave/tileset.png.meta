@@ -1,0 +1,267 @@
+fileFormatVersion: 2
+guid: 1a01fd1626e873a4289eed2e3efb4e4b
+timeCreated: 1456460952
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: cave wall
+    21300002: floor spread
+    21300004: tileset_3
+    21300006: light_floor_spread_small
+    21300008: dark_floor_spread_small
+    21300010: light_floor_spread
+    21300012: dark_floor_spread
+    21300014: stalagmite_small
+    21300016: rocks_small_1
+    21300018: rocks_1
+    21300020: rocks_2
+    21300022: stalagmite
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 16
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: cave wall
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 48}
+        - {x: -16, y: -48}
+        - {x: 16, y: -48}
+        - {x: 16, y: 48}
+    - name: floor spread
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: -11}
+        - {x: -16, y: -13}
+        - {x: -16, y: -16}
+        - {x: -11, y: -16}
+        - {x: -10, y: -15}
+        - {x: -10, y: -14}
+        - {x: -13, y: -11}
+      - - {x: -5, y: -1}
+        - {x: -8, y: -3}
+        - {x: -8, y: -16}
+        - {x: 6, y: -16}
+        - {x: 6, y: -11}
+        - {x: 0, y: -1}
+      - - {x: 13, y: -3}
+        - {x: 7, y: -11}
+        - {x: 7, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: -3}
+      - - {x: -14, y: 2}
+        - {x: -16, y: 2}
+        - {x: -16, y: -9}
+        - {x: -13, y: -7}
+        - {x: -11, y: -2}
+        - {x: -11, y: 0}
+      - - {x: 6, y: -5}
+        - {x: 9, y: -4}
+        - {x: 9, y: -1}
+        - {x: 6, y: 0}
+        - {x: 4, y: -2}
+      - - {x: 13, y: 5}
+        - {x: 10, y: 2}
+        - {x: 10, y: 0}
+        - {x: 13, y: -2}
+        - {x: 16, y: -2}
+        - {x: 16, y: 4}
+        - {x: 14, y: 5}
+      - - {x: -8, y: 6}
+        - {x: -9, y: 4}
+        - {x: -9, y: 1}
+        - {x: -6, y: -1}
+        - {x: -2, y: -1}
+        - {x: 0, y: 0}
+        - {x: 0, y: 4}
+        - {x: -3, y: 6}
+      - - {x: 8, y: 16}
+        - {x: 1, y: 12}
+        - {x: 1, y: 4}
+        - {x: 2, y: 3}
+        - {x: 9, y: 3}
+        - {x: 16, y: 9}
+        - {x: 16, y: 16}
+      - - {x: -16, y: 16}
+        - {x: -16, y: 4}
+        - {x: -10, y: 4}
+        - {x: 3, y: 11}
+        - {x: 6, y: 15}
+        - {x: 6, y: 16}
+      - - {x: 13, y: 7}
+        - {x: 15, y: 5}
+        - {x: 16, y: 5}
+        - {x: 16, y: 10}
+        - {x: 14, y: 10}
+    - name: tileset_3
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 117
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: light_floor_spread_small
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 72
+        width: 11
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: dark_floor_spread_small
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 71
+        width: 20
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: light_floor_spread
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 37
+        width: 37
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: dark_floor_spread
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 33
+        width: 44
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: stalagmite_small
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 10
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: rocks_small_1
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 18
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: rocks_1
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 4
+        width: 28
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: rocks_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 18
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: stalagmite
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 1
+        width: 29
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

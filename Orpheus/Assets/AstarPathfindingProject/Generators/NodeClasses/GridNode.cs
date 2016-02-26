@@ -3,17 +3,15 @@ using Pathfinding.Serialization;
 using UnityEngine;
 
 namespace Pathfinding {
-
 	/** Base class for GridNode and LevelGridNode */
 	public abstract class GridNodeBase : GraphNode {
-
-		protected GridNodeBase (AstarPath astar) : base (astar) {
+		protected GridNodeBase (AstarPath astar) : base(astar) {
 		}
 
 		protected int nodeInGridIndex;
 
 		/** The index of the node in the grid.
-		 * This is x + z*graph.width (+ y*graph.width*graph.depth if this is a LayerGridGraph)
+		 * This is x + z*graph.width
 		 * So you can get the X and Z indices using
 		 * \code
 		 * int index = node.NodeInGridIndex;
@@ -22,24 +20,25 @@ namespace Pathfinding {
 		 * // where graph is GridNode.GetGridGraph (node.graphIndex), i.e the graph the nodes are contained in.
 		 * \endcode
 		 */
-		public int NodeInGridIndex { get { return nodeInGridIndex;} set { nodeInGridIndex = value; }}
+		public int NodeInGridIndex { get { return nodeInGridIndex; } set { nodeInGridIndex = value; } }
 	}
 
 	public class GridNode : GridNodeBase {
-
-		public GridNode (AstarPath astar) : base (astar) {
+		public GridNode (AstarPath astar) : base(astar) {
 		}
 
 		private static GridGraph[] _gridGraphs = new GridGraph[0];
 		public static GridGraph GetGridGraph (uint graphIndex) { return _gridGraphs[(int)graphIndex]; }
 
+#if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
 		public GraphNode[] connections;
 		public uint[] connectionCosts;
+#endif
 
 		public static void SetGridGraph (int graphIndex, GridGraph graph) {
 			if (_gridGraphs.Length <= graphIndex) {
 				var gg = new GridGraph[graphIndex+1];
-				for (int i=0;i<_gridGraphs.Length;i++) gg[i] = _gridGraphs[i];
+				for (int i = 0; i < _gridGraphs.Length; i++) gg[i] = _gridGraphs[i];
 				_gridGraphs = gg;
 			}
 
@@ -69,19 +68,19 @@ namespace Pathfinding {
 
 		/** Returns true if the node has a connection in the specified direction.
 		 * The dir parameter corresponds to directions in the grid as:
-		 \code
-[0] = -Y
-[1] = +X
-[2] = +Y
-[3] = -X
-[4] = -Y+X
-[5] = +Y+X
-[6] = +Y-X
-[7] = -Y-X
-		\endcode
-
-		* \see SetConnectionInternal
-		*/
+		 * \code
+		 * [0] = -Y
+		 * [1] = +X
+		 * [2] = +Y
+		 * [3] = -X
+		 * [4] = -Y+X
+		 * [5] = +Y+X
+		 * [6] = +Y-X
+		 * [7] = -Y-X
+		 * \endcode
+		 *
+		 * \see SetConnectionInternal
+		 */
 		public bool GetConnectionInternal (int dir) {
 			return (gridFlags >> dir & GridFlagsConnectionBit0) != 0;
 		}
@@ -105,7 +104,7 @@ namespace Pathfinding {
 		/** Disables all grid connections from this node.
 		 * \note Other nodes might still be able to get to this node.
 		 * Therefore it is recommended to also disable the relevant connections on adjacent nodes.
-		*/
+		 */
 		public void ResetConnectionsInternal () {
 			unchecked {
 				gridFlags = (ushort)(gridFlags & ~GridFlagsConnectionMask);
@@ -122,8 +121,8 @@ namespace Pathfinding {
 		}
 
 		/** Stores walkability before erosion is applied.
-		  * Used by graph updating.
-		*/
+		 * Used by graph updating.
+		 */
 		public bool WalkableErosion {
 			get {
 				return (gridFlags & GridFlagsWalkableErosionMask) != 0;
@@ -145,41 +144,43 @@ namespace Pathfinding {
 
 		public override void ClearConnections (bool alsoReverse) {
 			if (alsoReverse) {
-				GridGraph gg = GetGridGraph (GraphIndex);
-				for (int i=0;i<8;i++) {
-					GridNode other = gg.GetNodeConnection (this,i);
+				GridGraph gg = GetGridGraph(GraphIndex);
+				for (int i = 0; i < 8; i++) {
+					GridNode other = gg.GetNodeConnection(this, i);
 					if (other != null) {
 						//Remove reverse connection
-						other.SetConnectionInternal(i < 4 ? ((i + 2) % 4) : (((5-2) % 4) + 4),false);
+						other.SetConnectionInternal(i < 4 ? ((i + 2) % 4) : (((5-2) % 4) + 4), false);
 					}
 				}
-
 			}
 
-			ResetConnectionsInternal ();
+			ResetConnectionsInternal();
 
-			if ( alsoReverse ) {
-				if ( connections != null ) for (int i=0;i<connections.Length;i++) connections[i].RemoveConnection ( this );
+#if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
+			if (alsoReverse) {
+				if (connections != null) for (int i = 0; i < connections.Length; i++) connections[i].RemoveConnection(this);
 			}
 			connections = null;
 			connectionCosts = null;
+#endif
 		}
 
-		public override void GetConnections (GraphNodeDelegate del)
-		{
+		public override void GetConnections (GraphNodeDelegate del) {
+			GridGraph gg = GetGridGraph(GraphIndex);
 
-			GridGraph gg = GetGridGraph (GraphIndex);
 			int[] neighbourOffsets = gg.neighbourOffsets;
 			GridNode[] nodes = gg.nodes;
 
-			for (int i=0;i<8;i++) {
+			for (int i = 0; i < 8; i++) {
 				if (GetConnectionInternal(i)) {
 					GridNode other = nodes[nodeInGridIndex + neighbourOffsets[i]];
-					if (other != null) del (other);
+					if (other != null) del(other);
 				}
 			}
 
-			if ( connections != null ) for (int i=0;i<connections.Length;i++) del(connections[i]);
+#if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
+			if (connections != null) for (int i = 0; i < connections.Length; i++) del(connections[i]);
+#endif
 		}
 
 		public Vector3 ClosestPointOnNode (Vector3 p) {
@@ -199,33 +200,32 @@ namespace Pathfinding {
 			// Handle the y coordinate separately
 			float y = gg.inverseMatrix.MultiplyPoint3x4((Vector3)p).y;
 
-			var closestInGraphSpace = new Vector3(Mathf.Clamp(xf,x-0.5f,x+0.5f)+0.5f, y, Mathf.Clamp(zf,z-0.5f,z+0.5f)+0.5f);
+			var closestInGraphSpace = new Vector3(Mathf.Clamp(xf, x-0.5f, x+0.5f)+0.5f, y, Mathf.Clamp(zf, z-0.5f, z+0.5f)+0.5f);
 
 			// Convert to world space
-			return gg.matrix.MultiplyPoint3x4 (closestInGraphSpace);
+			return gg.matrix.MultiplyPoint3x4(closestInGraphSpace);
 		}
 
-		public override bool GetPortal (GraphNode other, List<Vector3> left, List<Vector3> right, bool backwards)
-		{
+		public override bool GetPortal (GraphNode other, List<Vector3> left, List<Vector3> right, bool backwards) {
 			if (backwards) return true;
 
-			GridGraph gg = GetGridGraph (GraphIndex);
+			GridGraph gg = GetGridGraph(GraphIndex);
 			int[] neighbourOffsets = gg.neighbourOffsets;
 			GridNode[] nodes = gg.nodes;
 
-			for (int i=0;i<4;i++) {
+			for (int i = 0; i < 4; i++) {
 				if (GetConnectionInternal(i) && other == nodes[nodeInGridIndex + neighbourOffsets[i]]) {
 					Vector3 middle = ((Vector3)(position + other.position))*0.5f;
-					Vector3 cross = Vector3.Cross (gg.collision.up, (Vector3)(other.position-position));
+					Vector3 cross = Vector3.Cross(gg.collision.up, (Vector3)(other.position-position));
 					cross.Normalize();
 					cross *= gg.nodeSize*0.5f;
-					left.Add (middle - cross);
-					right.Add (middle + cross);
+					left.Add(middle - cross);
+					right.Add(middle + cross);
 					return true;
 				}
 			}
 
-			for (int i=4;i<8;i++) {
+			for (int i = 4; i < 8; i++) {
 				if (GetConnectionInternal(i) && other == nodes[nodeInGridIndex + neighbourOffsets[i]]) {
 					bool rClear = false;
 					bool lClear = false;
@@ -244,11 +244,11 @@ namespace Pathfinding {
 					}
 
 					Vector3 middle = ((Vector3)(position + other.position))*0.5f;
-					Vector3 cross = Vector3.Cross (gg.collision.up, (Vector3)(other.position-position));
+					Vector3 cross = Vector3.Cross(gg.collision.up, (Vector3)(other.position-position));
 					cross.Normalize();
 					cross *= gg.nodeSize*1.4142f;
-					left.Add (middle - (lClear ? cross : Vector3.zero));
-					right.Add (middle + (rClear ? cross : Vector3.zero));
+					left.Add(middle - (lClear ? cross : Vector3.zero));
+					right.Add(middle + (rClear ? cross : Vector3.zero));
 					return true;
 				}
 			}
@@ -257,29 +257,43 @@ namespace Pathfinding {
 		}
 
 		public override void FloodFill (Stack<GraphNode> stack, uint region) {
-			GridGraph gg = GetGridGraph (GraphIndex);
+			GridGraph gg = GetGridGraph(GraphIndex);
+
 			int[] neighbourOffsets = gg.neighbourOffsets;
 			GridNode[] nodes = gg.nodes;
 
-			for (int i=0;i<8;i++) {
+			for (int i = 0; i < 8; i++) {
 				if (GetConnectionInternal(i)) {
 					GridNode other = nodes[nodeInGridIndex + neighbourOffsets[i]];
 					if (other != null && other.Area != region) {
 						other.Area = region;
-						stack.Push (other);
+						stack.Push(other);
 					}
 				}
 			}
 
-			if ( connections != null ) for (int i=0;i<connections.Length;i++) {
-				GraphNode other = connections[i];
-				if (other.Area != region) {
-					other.Area = region;
-					stack.Push (other);
+#if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
+			if (connections != null) for (int i = 0; i < connections.Length; i++) {
+					GraphNode other = connections[i];
+					if (other.Area != region) {
+						other.Area = region;
+						stack.Push(other);
+					}
 				}
-			}
+#endif
 		}
 
+#if ASTAR_GRID_NO_CUSTOM_CONNECTIONS
+		public override void AddConnection (GraphNode node, uint cost) {
+			throw new System.NotImplementedException("GridNodes do not have support for adding manual connections with your current settings."+
+				"\nPlease disable ASTAR_GRID_NO_CUSTOM_CONNECTIONS in the Optimizations tab in the A* Inspector");
+		}
+
+		public override void RemoveConnection (GraphNode node) {
+			throw new System.NotImplementedException("GridNodes do not have support for adding manual connections with your current settings."+
+				"\nPlease disable ASTAR_GRID_NO_CUSTOM_CONNECTIONS in the Optimizations tab in the A* Inspector");
+		}
+#else
 		/** Add a connection from this node to the specified node.
 		 * If the connection already exists, the cost will simply be updated and
 		 * no extra connection added.
@@ -288,9 +302,8 @@ namespace Pathfinding {
 		 * to get a two-way connection.
 		 */
 		public override void AddConnection (GraphNode node, uint cost) {
-
 			if (connections != null) {
-				for (int i=0;i<connections.Length;i++) {
+				for (int i = 0; i < connections.Length; i++) {
 					if (connections[i] == node) {
 						connectionCosts[i] = cost;
 						return;
@@ -302,7 +315,7 @@ namespace Pathfinding {
 
 			var newconns = new GraphNode[connLength+1];
 			var newconncosts = new uint[connLength+1];
-			for (int i=0;i<connLength;i++) {
+			for (int i = 0; i < connLength; i++) {
 				newconns[i] = connections[i];
 				newconncosts[i] = connectionCosts[i];
 			}
@@ -322,21 +335,19 @@ namespace Pathfinding {
 		 * to this node.
 		 */
 		public override void RemoveConnection (GraphNode node) {
-
 			if (connections == null) return;
 
-			for (int i=0;i<connections.Length;i++) {
+			for (int i = 0; i < connections.Length; i++) {
 				if (connections[i] == node) {
-
 					int connLength = connections.Length;
 
 					var newconns = new GraphNode[connLength-1];
 					var newconncosts = new uint[connLength-1];
-					for (int j=0;j<i;j++) {
+					for (int j = 0; j < i; j++) {
 						newconns[j] = connections[j];
 						newconncosts[j] = connectionCosts[j];
 					}
-					for (int j=i+1;j<connLength;j++) {
+					for (int j = i+1; j < connLength; j++) {
 						newconns[j-1] = connections[j];
 						newconncosts[j-1] = connectionCosts[j];
 					}
@@ -347,36 +358,39 @@ namespace Pathfinding {
 				}
 			}
 		}
+#endif
 
 		public override void UpdateRecursiveG (Path path, PathNode pathNode, PathHandler handler) {
-			GridGraph gg = GetGridGraph (GraphIndex);
+			GridGraph gg = GetGridGraph(GraphIndex);
+
 			int[] neighbourOffsets = gg.neighbourOffsets;
 			GridNode[] nodes = gg.nodes;
 
-			UpdateG (path,pathNode);
-			handler.PushNode (pathNode);
+			UpdateG(path, pathNode);
+			handler.PushNode(pathNode);
 
 			ushort pid = handler.PathID;
 
-			for (int i=0;i<8;i++) {
+			for (int i = 0; i < 8; i++) {
 				if (GetConnectionInternal(i)) {
 					GridNode other = nodes[nodeInGridIndex + neighbourOffsets[i]];
-					PathNode otherPN = handler.GetPathNode (other);
-					if (otherPN.parent == pathNode && otherPN.pathID == pid) other.UpdateRecursiveG (path, otherPN,handler);
+					PathNode otherPN = handler.GetPathNode(other);
+					if (otherPN.parent == pathNode && otherPN.pathID == pid) other.UpdateRecursiveG(path, otherPN, handler);
 				}
 			}
 
-			if ( connections != null ) for (int i=0;i<connections.Length;i++) {
-				GraphNode other = connections[i];
-				PathNode otherPN = handler.GetPathNode (other);
-				if (otherPN.parent == pathNode && otherPN.pathID == pid) other.UpdateRecursiveG (path, otherPN,handler);
-			}
+#if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
+			if (connections != null) for (int i = 0; i < connections.Length; i++) {
+					GraphNode other = connections[i];
+					PathNode otherPN = handler.GetPathNode(other);
+					if (otherPN.parent == pathNode && otherPN.pathID == pid) other.UpdateRecursiveG(path, otherPN, handler);
+				}
+#endif
 		}
 
 
 		public override void Open (Path path, PathNode pathNode, PathHandler handler) {
-
-			GridGraph gg = GetGridGraph (GraphIndex);
+			GridGraph gg = GetGridGraph(GraphIndex);
 
 			ushort pid = handler.PathID;
 
@@ -385,13 +399,12 @@ namespace Pathfinding {
 				uint[] neighbourCosts = gg.neighbourCosts;
 				GridNode[] nodes = gg.nodes;
 
-				for (int i=0;i<8;i++) {
+				for (int i = 0; i < 8; i++) {
 					if (GetConnectionInternal(i)) {
-
 						GridNode other = nodes[nodeInGridIndex + neighbourOffsets[i]];
-						if (!path.CanTraverse (other)) continue;
+						if (!path.CanTraverse(other)) continue;
 
-						PathNode otherPN = handler.GetPathNode (other);
+						PathNode otherPN = handler.GetPathNode(other);
 
 						uint tmpCost = neighbourCosts[i];
 
@@ -401,14 +414,13 @@ namespace Pathfinding {
 
 							otherPN.cost = tmpCost;
 
-							otherPN.H = path.CalculateHScore (other);
-							other.UpdateG (path, otherPN);
+							otherPN.H = path.CalculateHScore(other);
+							other.UpdateG(path, otherPN);
 
 							//Debug.Log ("G " + otherPN.G + " F " + otherPN.F);
-							handler.PushNode (otherPN);
+							handler.PushNode(otherPN);
 							//Debug.DrawRay ((Vector3)otherPN.node.Position, Vector3.up,Color.blue);
 						} else {
-
 							// Sorry for the huge number of #ifs
 
 							//If not we can test if the path from the current node to this one is a better one then the one already used
@@ -424,17 +436,16 @@ namespace Pathfinding {
 
 								otherPN.parent = pathNode;
 
-								other.UpdateRecursiveG (path,otherPN, handler);
+								other.UpdateRecursiveG(path, otherPN, handler);
 
-							//Or if the path from this node ("other") to the current ("current") is better
+								//Or if the path from this node ("other") to the current ("current") is better
 							}
 #if ASTAR_NO_TRAVERSAL_COST
 							else if (otherPN.G+tmpCost < pathNode.G)
 #else
-							else if (otherPN.G+tmpCost+path.GetTraversalCost (this) < pathNode.G)
+							else if (otherPN.G+tmpCost+path.GetTraversalCost(this) < pathNode.G)
 #endif
 							{
-
 								//Debug.Log ("Path better from " + otherPN.node.NodeIndex + " to " + NodeIndex + " " + (otherPN.G+tmpCost+path.GetTraversalCost (this)) + " < " + pathNode.G);
 								pathNode.parent = otherPN;
 								pathNode.cost = tmpCost;
@@ -446,75 +457,74 @@ namespace Pathfinding {
 				}
 			}
 
-			if (connections != null) for (int i=0;i<connections.Length;i++) {
+#if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
+			if (connections != null) for (int i = 0; i < connections.Length; i++) {
+					GraphNode other = connections[i];
+					if (!path.CanTraverse(other)) continue;
 
-				GraphNode other = connections[i];
-				if (!path.CanTraverse (other)) continue;
+					PathNode otherPN = handler.GetPathNode(other);
 
-				PathNode otherPN = handler.GetPathNode (other);
+					uint tmpCost = connectionCosts[i];
 
-				uint tmpCost = connectionCosts[i];
+					if (otherPN.pathID != pid) {
+						otherPN.parent = pathNode;
+						otherPN.pathID = pid;
 
-				if (otherPN.pathID != pid) {
-					otherPN.parent = pathNode;
-					otherPN.pathID = pid;
-
-					otherPN.cost = tmpCost;
-
-					otherPN.H = path.CalculateHScore (other);
-					other.UpdateG (path, otherPN);
-
-					//Debug.Log ("G " + otherPN.G + " F " + otherPN.F);
-					handler.PushNode (otherPN);
-					//Debug.DrawRay ((Vector3)otherPN.node.Position, Vector3.up,Color.blue);
-				} else {
-
-					// Sorry for the huge number of #ifs
-
-					//If not we can test if the path from the current node to this one is a better one then the one already used
-
-#if ASTAR_NO_TRAVERSAL_COST
-					if (pathNode.G+tmpCost < otherPN.G)
-#else
-					if (pathNode.G+tmpCost+path.GetTraversalCost(other) < otherPN.G)
-#endif
-					{
-						//Debug.Log ("Path better from " + NodeIndex + " to " + otherPN.node.NodeIndex + " " + (pathNode.G+tmpCost+path.GetTraversalCost(other)) + " < " + otherPN.G);
 						otherPN.cost = tmpCost;
 
-						otherPN.parent = pathNode;
+						otherPN.H = path.CalculateHScore(other);
+						other.UpdateG(path, otherPN);
 
-						other.UpdateRecursiveG (path,otherPN, handler);
+						//Debug.Log ("G " + otherPN.G + " F " + otherPN.F);
+						handler.PushNode(otherPN);
+						//Debug.DrawRay ((Vector3)otherPN.node.Position, Vector3.up,Color.blue);
+					} else {
+						// Sorry for the huge number of #ifs
 
-					//Or if the path from this node ("other") to the current ("current") is better
-					}
+						//If not we can test if the path from the current node to this one is a better one then the one already used
+
 #if ASTAR_NO_TRAVERSAL_COST
-					else if (otherPN.G+tmpCost < pathNode.G && other.ContainsConnection (this))
+						if (pathNode.G+tmpCost < otherPN.G)
 #else
-					else if (otherPN.G+tmpCost+path.GetTraversalCost (this) < pathNode.G && other.ContainsConnection (this))
+						if (pathNode.G+tmpCost+path.GetTraversalCost(other) < otherPN.G)
 #endif
-					{
-						//Debug.Log ("Path better from " + otherPN.node.NodeIndex + " to " + NodeIndex + " " + (otherPN.G+tmpCost+path.GetTraversalCost (this)) + " < " + pathNode.G);
-						pathNode.parent = otherPN;
-						pathNode.cost = tmpCost;
+						{
+							//Debug.Log ("Path better from " + NodeIndex + " to " + otherPN.node.NodeIndex + " " + (pathNode.G+tmpCost+path.GetTraversalCost(other)) + " < " + otherPN.G);
+							otherPN.cost = tmpCost;
 
-						UpdateRecursiveG(path, pathNode, handler);
+							otherPN.parent = pathNode;
+
+							other.UpdateRecursiveG(path, otherPN, handler);
+
+							//Or if the path from this node ("other") to the current ("current") is better
+						}
+#if ASTAR_NO_TRAVERSAL_COST
+						else if (otherPN.G+tmpCost < pathNode.G && other.ContainsConnection(this))
+#else
+						else if (otherPN.G+tmpCost+path.GetTraversalCost(this) < pathNode.G && other.ContainsConnection(this))
+#endif
+						{
+							//Debug.Log ("Path better from " + otherPN.node.NodeIndex + " to " + NodeIndex + " " + (otherPN.G+tmpCost+path.GetTraversalCost (this)) + " < " + pathNode.G);
+							pathNode.parent = otherPN;
+							pathNode.cost = tmpCost;
+
+							UpdateRecursiveG(path, pathNode, handler);
+						}
 					}
 				}
-			}
+#endif
 		}
 
 		public override void SerializeNode (GraphSerializationContext ctx) {
-			base.SerializeNode (ctx);
-			ctx.writer.Write (position.x);
-			ctx.writer.Write (position.y);
-			ctx.writer.Write (position.z);
-			ctx.writer.Write (gridFlags);
+			base.SerializeNode(ctx);
+			ctx.writer.Write(position.x);
+			ctx.writer.Write(position.y);
+			ctx.writer.Write(position.z);
+			ctx.writer.Write(gridFlags);
 		}
 
-		public override void DeserializeNode (GraphSerializationContext ctx)
-		{
-			base.DeserializeNode (ctx);
+		public override void DeserializeNode (GraphSerializationContext ctx) {
+			base.DeserializeNode(ctx);
 			position = new Int3(ctx.reader.ReadInt32(), ctx.reader.ReadInt32(), ctx.reader.ReadInt32());
 			gridFlags = ctx.reader.ReadUInt16();
 		}

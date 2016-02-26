@@ -4,11 +4,11 @@ using System.Collections;
 
 [RequireComponent(typeof(LightDetector))]
 [RequireComponent(typeof(Enemy))]
-//[RequireComponent(typeof(EnemyAI))]
+[RequireComponent(typeof(AIPath2D))]
 public class Light_Damage : MonoBehaviour {
 
     LightDetector connectedDetector;
-    EnemyAI enemyAI;
+    AIPath2D enemyAI;
     Enemy enemy;
     public Light connectedLight;
     [Tooltip("The time it takes for the enemy to slow down. Arbitrary values. Acts like health.")]
@@ -36,7 +36,7 @@ public class Light_Damage : MonoBehaviour {
         brightnessWeight = 1f - distanceWeight;
 
         connectedDetector = GetComponent<LightDetector>();
-        enemyAI = GetComponent<EnemyAI>();
+        enemyAI = GetComponent<AIPath2D>();
         enemy = GetComponent<Enemy>();
 
         // connect the starting speed to the connected enemy's speed
@@ -49,6 +49,7 @@ public class Light_Damage : MonoBehaviour {
         // if the Object is in light
         if (connectedDetector.inLight() == true)
         {
+            Debug.Log("Lit!");
 
             // calculate the effective brightness and the weighted average
             effectiveBrightness = connectedDetector.effectiveBrightness(connectedDetector.distance);
@@ -62,7 +63,7 @@ public class Light_Damage : MonoBehaviour {
                      enemyAI.speed = Mathf.Lerp(startSpeed, endSpeed, tParam);
                 }
 
-                else if(enemyAI.speed == 0)
+                else if(!enemyAI.canMove)
                 {
                 // enemy is frozen
                 Debug.Log("Enemy is frozen!");
@@ -83,6 +84,9 @@ public class Light_Damage : MonoBehaviour {
         }
     }
 
+    /** Calculates and returns a damage value based on distance
+    * 
+    */
     float calculateDamageAtDistance()
     {
 
@@ -127,7 +131,4 @@ public class Light_Damage : MonoBehaviour {
         }
         return distanceFactor;
     }
-
-
-        //currentDecelTime += Time.deltaTime; 
 }

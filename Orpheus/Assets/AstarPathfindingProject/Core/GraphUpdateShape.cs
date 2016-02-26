@@ -1,13 +1,11 @@
 using UnityEngine;
 
 namespace Pathfinding {
-
 	/** Defines a shape for a Pathfinding.GraphUpdateObject.
 	 * The shape consists of a number of points which it can either calculate the convex hull of (XZ space) or use as a polygon directly.
 	 * \see Pathfinding.GraphUpdateObject.shape
 	 */
-	public class GraphUpdateShape  {
-
+	public class GraphUpdateShape {
 		Vector3[] _points;
 		Vector3[] _convexPoints;
 		bool _convex;
@@ -20,7 +18,7 @@ namespace Pathfinding {
 			}
 			set {
 				_points = value;
-				if (convex) CalculateConvexHull ();
+				if (convex) CalculateConvexHull();
 			}
 		}
 
@@ -32,9 +30,9 @@ namespace Pathfinding {
 				return _convex;
 			}
 			set {
-				if (_convex	!= value && value) {
+				if (_convex != value && value) {
 					_convex = value;
-					CalculateConvexHull ();
+					CalculateConvexHull();
 				} else {
 					_convex = value;
 				}
@@ -44,9 +42,9 @@ namespace Pathfinding {
 		private void CalculateConvexHull () {
 			if (points == null) { _convexPoints = null; return; }
 
-			_convexPoints = Polygon.ConvexHull (points);
-			for (int i=0;i<_convexPoints.Length;i++) {
-				Debug.DrawLine (_convexPoints[i],_convexPoints[(i+1) % _convexPoints.Length],Color.green);
+			_convexPoints = Polygon.ConvexHullXZ(points);
+			for (int i = 0; i < _convexPoints.Length; i++) {
+				Debug.DrawLine(_convexPoints[i], _convexPoints[(i+1) % _convexPoints.Length], Color.green);
 			}
 		}
 
@@ -54,11 +52,11 @@ namespace Pathfinding {
 			if (points == null || points.Length == 0) return new Bounds();
 			Vector3 min = points[0];
 			Vector3 max = points[0];
-			for (int i=0;i<points.Length;i++) {
-				min = Vector3.Min (min,points[i]);
-				max = Vector3.Max (max,points[i]);
+			for (int i = 0; i < points.Length; i++) {
+				min = Vector3.Min(min, points[i]);
+				max = Vector3.Max(max, points[i]);
 			}
-			return new Bounds ((min+max)*0.5F,max-min);
+			return new Bounds((min+max)*0.5F, max-min);
 		}
 
 		public bool Contains (GraphNode node) {
@@ -69,12 +67,12 @@ namespace Pathfinding {
 			if (convex) {
 				if (_convexPoints == null) return false;
 
-				for (int i=0,j=_convexPoints.Length-1;i<_convexPoints.Length;j=i,i++) {
-					if (Polygon.Left (_convexPoints[i],_convexPoints[j],point)) return false;
+				for (int i = 0, j = _convexPoints.Length-1; i < _convexPoints.Length; j = i, i++) {
+					if (VectorMath.RightOrColinearXZ(_convexPoints[i], _convexPoints[j], point)) return false;
 				}
 				return true;
 			} else {
-				return _points != null && Polygon.ContainsPoint (_points,point);
+				return _points != null && Polygon.ContainsPointXZ (_points, point);
 			}
 		}
 	}

@@ -20,7 +20,6 @@ namespace Pathfinding {
 	 */
 	[System.Serializable]
 	public class EuclideanEmbedding {
-
 		public HeuristicOptimizationMode mode;
 
 		public int seed;
@@ -34,10 +33,10 @@ namespace Pathfinding {
 		public bool dirty;
 
 
-		void EnsureCapacity ( int index ) {
+		void EnsureCapacity (int index) {
 		}
 
-		public uint GetHeuristic ( int nodeIndex1, int nodeIndex2 ) {
+		public uint GetHeuristic (int nodeIndex1, int nodeIndex2) {
 			return 0;
 		}
 

@@ -104,8 +104,9 @@ public class FlashlightTopDown : MonoBehaviour
         Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - flashlight.transform.position;
         difference.Normalize();		// normalizing the vector. Meaning that all the sum of the vector will be equal to 1
 
-        float rotX = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;	// find the angle in degrees
-        transform.rotation = Quaternion.Euler(-rotX, rotationOffset, rotationOffset);
+        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;	// find the angle in degrees
+        transform.rotation = Quaternion.Euler(-rotZ, rotationOffset,rotationOffset);
+        //transform.rotation = Quaternion.Euler(0f, 2*rotationOffset, 3*rotationOffset - rotZ);
     }
 
     // BATTERY DRAIN
@@ -136,17 +137,4 @@ public class FlashlightTopDown : MonoBehaviour
     {
         GUI.Box(new Rect(10, 10, 100, 100), "charge = " + charge);
     }
-
-    // deprecated
-    /*void pivot(KeyCode pivotUpKeyCode, KeyCode pivotDownKeyCode)
-    {
-        if (Input.GetKey(pivotUpKeyCode) && flashlight.enabled)
-        {
-            flashlight.transform.Rotate(Vector3.up * pivotSpeed * Time.deltaTime);
-        }
-        else if (Input.GetKey(pivotDownKeyCode) && flashlight.enabled)
-        {
-            flashlight.transform.Rotate(Vector3.down * pivotSpeed * Time.deltaTime);
-        }
-    } */
 }

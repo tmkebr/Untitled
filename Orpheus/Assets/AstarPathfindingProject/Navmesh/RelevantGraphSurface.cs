@@ -9,8 +9,8 @@ namespace Pathfinding {
 	 *
 	 */
 	[AddComponentMenu("Pathfinding/Navmesh/RelevantGraphSurface")]
+	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_relevant_graph_surface.php")]
 	public class RelevantGraphSurface : MonoBehaviour {
-
 		private static RelevantGraphSurface root;
 
 		public float maxRange = 1;
@@ -20,23 +20,19 @@ namespace Pathfinding {
 		private Vector3 position;
 
 		public Vector3 Position {
-			get { return position;
-			}
+			get { return position; }
 		}
 
 		public RelevantGraphSurface Next {
-			get { return next;
-			}
+			get { return next; }
 		}
 
 		public RelevantGraphSurface Prev {
-			get { return prev;
-			}
+			get { return prev; }
 		}
 
 		public static RelevantGraphSurface Root {
-			get { return root;
-			}
+			get { return root; }
 		}
 
 		public void UpdatePosition () {
@@ -71,25 +67,27 @@ namespace Pathfinding {
 		 */
 		public static void UpdateAllPositions () {
 			RelevantGraphSurface c = root;
-			while (c != null) { c.UpdatePosition (); c = c.Next; }
+
+			while (c != null) { c.UpdatePosition(); c = c.Next; }
 		}
 
 		public static void FindAllGraphSurfaces () {
 			var srf = GameObject.FindObjectsOfType(typeof(RelevantGraphSurface)) as RelevantGraphSurface[];
+
 			for (int i = 0; i < srf.Length; i++) {
-				srf[i].OnDisable ();
-				srf[i].OnEnable ();
+				srf[i].OnDisable();
+				srf[i].OnEnable();
 			}
 		}
 
 		public void OnDrawGizmos () {
-			Gizmos.color = new Color (57/255f, 211/255f, 46/255f, 0.4f);
-			Gizmos.DrawLine (transform.position - Vector3.up*maxRange, transform.position + Vector3.up*maxRange);
+			Gizmos.color = new Color(57/255f, 211/255f, 46/255f, 0.4f);
+			Gizmos.DrawLine(transform.position - Vector3.up*maxRange, transform.position + Vector3.up*maxRange);
 		}
 
 		public void OnDrawGizmosSelected () {
-			Gizmos.color = new Color (57/255f, 211/255f, 46/255f);
-			Gizmos.DrawLine (transform.position - Vector3.up*maxRange, transform.position + Vector3.up*maxRange);
+			Gizmos.color = new Color(57/255f, 211/255f, 46/255f);
+			Gizmos.DrawLine(transform.position - Vector3.up*maxRange, transform.position + Vector3.up*maxRange);
 		}
 	}
 }
