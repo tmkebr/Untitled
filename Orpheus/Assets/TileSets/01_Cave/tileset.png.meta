@@ -1,21 +1,29 @@
 fileFormatVersion: 2
-guid: 1a01fd1626e873a4289eed2e3efb4e4b
-timeCreated: 1456460952
+guid: 99e0c59d411d2e2459d753f5baaaeeef
+timeCreated: 1458359583
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: cave wall
-    21300002: floor spread
-    21300004: tileset_3
-    21300006: light_floor_spread_small
-    21300008: dark_floor_spread_small
-    21300010: light_floor_spread
-    21300012: dark_floor_spread
-    21300014: stalagmite_small
-    21300016: rocks_small_1
-    21300018: rocks_1
-    21300020: rocks_2
-    21300022: stalagmite
+    21300000: tileset_0
+    21300002: tileset_1
+    21300004: cave_rocks_small3
+    21300006: cave_rocks_large1
+    21300008: tileset_4
+    21300010: cave_rocks_small2
+    21300012: cave_rocks_medium1
+    21300014: tileset_7
+    21300016: cave_rocks_stalagmite3
+    21300018: cave_rocks_stalagmite2
+    21300020: cave_rocks_tiny3
+    21300022: cave_rocks_tiny2
+    21300024: cave_rocks_tiny1
+    21300026: cave_rocks_small1
+    21300028: tileset_14
+    21300030: tileset_15
+    21300032: tileset_16
+    21300034: tileset_17
+    21300036: tileset_18
+    21300038: cave_rocks_stalagmite1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -62,200 +70,245 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: cave wall
+    - name: tileset_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 96
-        width: 32
-        height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 48}
-        - {x: -16, y: -48}
-        - {x: 16, y: -48}
-        - {x: 16, y: 48}
-    - name: floor spread
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 96
-        width: 32
+        x: 37
+        y: 143
+        width: 25
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -14, y: -11}
-        - {x: -16, y: -13}
-        - {x: -16, y: -16}
-        - {x: -11, y: -16}
-        - {x: -10, y: -15}
-        - {x: -10, y: -14}
-        - {x: -13, y: -11}
-      - - {x: -5, y: -1}
-        - {x: -8, y: -3}
-        - {x: -8, y: -16}
-        - {x: 6, y: -16}
-        - {x: 6, y: -11}
-        - {x: 0, y: -1}
-      - - {x: 13, y: -3}
-        - {x: 7, y: -11}
-        - {x: 7, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -3}
-      - - {x: -14, y: 2}
-        - {x: -16, y: 2}
-        - {x: -16, y: -9}
-        - {x: -13, y: -7}
-        - {x: -11, y: -2}
-        - {x: -11, y: 0}
-      - - {x: 6, y: -5}
-        - {x: 9, y: -4}
-        - {x: 9, y: -1}
-        - {x: 6, y: 0}
-        - {x: 4, y: -2}
-      - - {x: 13, y: 5}
-        - {x: 10, y: 2}
-        - {x: 10, y: 0}
-        - {x: 13, y: -2}
-        - {x: 16, y: -2}
-        - {x: 16, y: 4}
-        - {x: 14, y: 5}
-      - - {x: -8, y: 6}
-        - {x: -9, y: 4}
-        - {x: -9, y: 1}
-        - {x: -6, y: -1}
-        - {x: -2, y: -1}
-        - {x: 0, y: 0}
-        - {x: 0, y: 4}
-        - {x: -3, y: 6}
-      - - {x: 8, y: 16}
-        - {x: 1, y: 12}
-        - {x: 1, y: 4}
-        - {x: 2, y: 3}
-        - {x: 9, y: 3}
-        - {x: 16, y: 9}
-        - {x: 16, y: 16}
-      - - {x: -16, y: 16}
-        - {x: -16, y: 4}
-        - {x: -10, y: 4}
-        - {x: 3, y: 11}
-        - {x: 6, y: 15}
-        - {x: 6, y: 16}
-      - - {x: 13, y: 7}
-        - {x: 15, y: 5}
-        - {x: 16, y: 5}
-        - {x: 16, y: 10}
-        - {x: 14, y: 10}
-    - name: tileset_3
-      rect:
-        serializedVersion: 2
-        x: 83
-        y: 117
-        width: 4
-        height: 4
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: light_floor_spread_small
+    - name: tileset_1
       rect:
         serializedVersion: 2
-        x: 43
-        y: 72
+        x: 63
+        y: 144
+        width: 57
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10.5, y: 24}
+        - {x: -13.5, y: 22}
+        - {x: -28.5, y: -8}
+        - {x: -28.5, y: -20}
+        - {x: -21.5, y: -24}
+        - {x: 16.5, y: -24}
+        - {x: 28.5, y: -21}
+        - {x: 28.5, y: 1}
+        - {x: 17.5, y: 24}
+    - name: cave_rocks_small3
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 166
+        width: 36
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: cave_rocks_large1
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 113
+        width: 45
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14.5, y: 34}
+        - {x: -22.5, y: 17}
+        - {x: -22.5, y: -31}
+        - {x: -19.5, y: -34}
+        - {x: 22.5, y: -34}
+        - {x: 22.5, y: 26}
+        - {x: 8.5, y: 34}
+    - name: tileset_4
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 134
+        width: 36
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: cave_rocks_small2
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 79
+        width: 25
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: cave_rocks_medium1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 56
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 24}
+        - {x: -28, y: 2}
+        - {x: -28, y: -24}
+        - {x: 21, y: -24}
+        - {x: 28, y: -20}
+        - {x: 28, y: 18}
+        - {x: 13, y: 24}
+    - name: tileset_7
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 101
         width: 11
-        height: 8
+        height: 19
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: dark_floor_spread_small
+    - name: cave_rocks_stalagmite3
       rect:
         serializedVersion: 2
-        x: 164
-        y: 71
-        width: 20
-        height: 12
+        x: 171
+        y: 101
+        width: 11
+        height: 19
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: light_floor_spread
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 37
-        width: 37
-        height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: dark_floor_spread
-      rect:
-        serializedVersion: 2
-        x: 138
-        y: 33
-        width: 44
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: stalagmite_small
+    - name: cave_rocks_stalagmite2
       rect:
         serializedVersion: 2
         x: 9
-        y: 10
+        y: 40
         width: 6
-        height: 13
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: rocks_small_1
+    - name: cave_rocks_tiny3
       rect:
         serializedVersion: 2
-        x: 43
-        y: 18
-        width: 4
-        height: 4
+        x: 41
+        y: 49
+        width: 8
+        height: 5
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: rocks_1
+    - name: cave_rocks_tiny2
       rect:
         serializedVersion: 2
         x: 66
-        y: 4
-        width: 28
-        height: 22
+        y: 35
+        width: 30
+        height: 23
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: rocks_2
+    - name: cave_rocks_tiny1
       rect:
         serializedVersion: 2
-        x: 110
-        y: 18
-        width: 15
-        height: 10
+        x: 105
+        y: 47
+        width: 19
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: stalagmite
+    - name: cave_rocks_small1
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 34
+        width: 32
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: tileset_14
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 8
+        width: 6
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: tileset_15
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 17
+        width: 8
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: tileset_16
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 3
+        width: 31
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: tileset_17
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 15
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: tileset_18
       rect:
         serializedVersion: 2
         x: 130
-        y: 1
+        y: 0
+        width: 32
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: cave_rocks_stalagmite1
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 0
         width: 29
-        height: 26
+        height: 27
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

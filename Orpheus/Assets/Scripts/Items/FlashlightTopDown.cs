@@ -8,6 +8,7 @@ public class FlashlightTopDown : MonoBehaviour
 
     // Public variables
     public CharacterController2D player; // the player containing information for position and velocity
+    public MeshRenderer flashlightRadial;
     public KeyCode flashlightToggleKey = KeyCode.Mouse0; // key to turn the flashlight on/off (Mouse0 by default)
     public KeyCode flashlightUpKey = KeyCode.W;
     public KeyCode flashlightDownKey = KeyCode.S;
@@ -32,6 +33,8 @@ public class FlashlightTopDown : MonoBehaviour
     [Tooltip("Unlimited charge for testing")]
     public bool testMode;
 
+
+
     // Offsets to align flashlight with player's hand
     Vector3 flashlightOffset;
     float yOff, xOff, zOff;
@@ -42,9 +45,9 @@ public class FlashlightTopDown : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        // get necessary components
         theAudio = GetComponent<AudioSource>();
-
+        flashlightRadial = GetComponentInChildren<MeshRenderer>();
 
         // set-up and store the light for use
         flashlight = GetComponent<Light>();
@@ -86,11 +89,13 @@ public class FlashlightTopDown : MonoBehaviour
         if (Input.GetKeyDown(toggleKeyCode) && (flashlight.enabled != true))
         {
             flashlight.enabled = true;
+            flashlightRadial.enabled = true;
             theAudio.PlayOneShot(clickSound);
         }
         else if (Input.GetKeyDown(toggleKeyCode) && flashlight.enabled)
         {
             flashlight.enabled = false;
+            flashlightRadial.enabled = false;
             theAudio.PlayOneShot(clickSound);
         }
     }

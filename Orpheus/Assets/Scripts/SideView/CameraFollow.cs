@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
 
-	public Controller2D target; // the object to follow
+	public CharacterControllerSideways target; // the object to follow
 	public float verticalOffset; // how far to move the camera vertically when target moves outside the focus area
 	public float lookAheadDstX; // how far to move the camera horizontally when the target moves outside the focus area
 	public float lookSmoothTimeX; // how long it takes for the look ahead to take place
@@ -26,12 +26,12 @@ public class CameraFollow : MonoBehaviour {
 	bool lookAheadStopped;
 
 	void Start() {
-		focusArea = new FocusArea (target.theCollider.bounds, focusAreaSize);
+		focusArea = new FocusArea (target.GetComponent<Collider2D>().bounds, focusAreaSize);
 	}
 
     // done after the target's movement
 	void LateUpdate() {
-		focusArea.Update (target.theCollider.bounds); // update the focusarea's knowledge of the target's position 
+		focusArea.Update (target.GetComponent<Collider2D>().bounds); // update the focusarea's knowledge of the target's position 
 
 		Vector2 focusPosition = focusArea.centre + Vector2.up * verticalOffset;
 

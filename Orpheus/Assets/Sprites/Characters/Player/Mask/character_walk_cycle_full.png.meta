@@ -1,0 +1,345 @@
+fileFormatVersion: 2
+guid: 0e04cbb2259c9c9438016091498de3f3
+timeCreated: 1458364598
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: character_walk_left0
+    21300002: character_walk_left1
+    21300004: character_walk_left2
+    21300006: character_walk_left3
+    21300008: character_walk_left4
+    21300010: character_walk_left5
+    21300012: character_walk_up0
+    21300014: character_walk_up1
+    21300016: character_walk_up2
+    21300018: character_walk_up3
+    21300020: character_walk_up4
+    21300022: character_walk_up5
+    21300024: character_walk_down0
+    21300026: character_walk_down1
+    21300028: character_walk_down2
+    21300030: character_walk_down3
+    21300032: character_walk_down4
+    21300034: character_walk_down5
+    21300036: character_walk_right0
+    21300038: character_walk_right1
+    21300040: character_walk_right2
+    21300042: character_walk_right3
+    21300044: character_walk_right4
+    21300046: character_walk_right5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 16
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: character_walk_left0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 143
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_left1
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 144
+        width: 11
+        height: 31
+      alignment: 9
+      pivot: {x: 0.4999993, y: 0.48187158}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_left2
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 143
+        width: 13
+        height: 31
+      alignment: 9
+      pivot: {x: 0.5781062, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_left3
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 143
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_left4
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 144
+        width: 11
+        height: 31
+      alignment: 9
+      pivot: {x: 0.5000028, y: 0.48551595}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_left5
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 143
+        width: 10
+        height: 31
+      alignment: 9
+      pivot: {x: 0.550766, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_up0
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 78
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_up1
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 79
+        width: 12
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5498912, y: 0.48285007}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_up2
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 78
+        width: 11
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5000014, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_up3
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 78
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_up4
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 79
+        width: 12
+        height: 32
+      alignment: 9
+      pivot: {x: 0.47089896, y: 0.4828503}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_up5
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 78
+        width: 11
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5181441, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_down0
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 14
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_down1
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 15
+        width: 11
+        height: 32
+      alignment: 9
+      pivot: {x: 0.50453603, y: 0.48440933}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_down2
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 14
+        width: 10
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5548798, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_down3
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 14
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_down4
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 15
+        width: 11
+        height: 32
+      alignment: 9
+      pivot: {x: 0.50453603, y: 0.4828503}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_down5
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 14
+        width: 10
+        height: 32
+      alignment: 9
+      pivot: {x: 0.46009216, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_right0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 207
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_right1
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 208
+        width: 11
+        height: 31
+      alignment: 9
+      pivot: {x: 0.5, y: 0.48078623}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_right2
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 207
+        width: 13
+        height: 31
+      alignment: 9
+      pivot: {x: 0.42749494, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_right3
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 207
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_right4
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 208
+        width: 11
+        height: 31
+      alignment: 9
+      pivot: {x: 0.50428355, y: 0.48479733}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_walk_right5
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 207
+        width: 10
+        height: 31
+      alignment: 9
+      pivot: {x: 0.4575836, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

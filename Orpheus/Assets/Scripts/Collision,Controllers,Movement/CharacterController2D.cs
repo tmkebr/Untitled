@@ -5,8 +5,8 @@ public class CharacterController2D : MonoBehaviour
 {
 
     private Animator anim;
-    public Vector2 walkSpeed = new Vector2(1,1);
-    public Vector2 sprintSpeed = new Vector2(2, 2);
+    public Vector2 walkSpeed = new Vector2(2,2);
+    public Vector2 sprintSpeed = new Vector2(4, 4);
     public KeyCode sprintKey = KeyCode.LeftShift;
 
     [HideInInspector]
@@ -14,15 +14,13 @@ public class CharacterController2D : MonoBehaviour
 
     float lastinputX, lastinputY = 0;
 
-    bool facingRight;
+    //bool facingRight;
 
     void Start()
     {
         anim = GetComponent<Animator>(); // stores object's animations
 
-    
-
-        facingRight = true;
+        //facingRight = true;
     }
 
     void Update()
@@ -33,38 +31,7 @@ public class CharacterController2D : MonoBehaviour
         anim.SetFloat("SpeedX", playerInput.x);
         anim.SetFloat("SpeedY", playerInput.y);
 
-        checkTurn();
         move();        
-    }
-
-    // CHECK TURN
-    // Manages flipping of the character
-    // Flips the character if the input is in the opposite direction they're facing
-    public void checkTurn()
-    {
-
-        if (playerInput.x < 0)
-        {
-            facingRight = false;
-            transform.localRotation = Quaternion.Euler(0, 180, 0);
-        }
-        else if (playerInput.x > 0)
-        {
-            facingRight = true;
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
-        }
-
-        //// If the player is currently facing right, and has input left
-        //if (facingRight && playerInput.x == -1)
-        //{
-        //    // flip the character
-        //    Flip();
-        //}
-        //else if (!facingRight && playerInput.x == 1)
-        //{
-        //    // else if the character is facing left and is going right, flip the character
-        //    Flip();
-        //}
     }
 
     // MOVE
@@ -79,7 +46,7 @@ public class CharacterController2D : MonoBehaviour
         }
 
         // Move the character
-        Vector3 movement = new Vector3(Mathf.Abs(moveSpeed.x * playerInput.x), moveSpeed.y * playerInput.y, 0);
+        Vector3 movement = new Vector3(moveSpeed.x * playerInput.x, moveSpeed.y * playerInput.y, 0);
         movement *= Time.deltaTime;
         transform.Translate(movement);
     }
@@ -141,6 +108,37 @@ public class CharacterController2D : MonoBehaviour
     //    theScale.x *= -1;
     //    transform.localScale = theScale;
     //}
+
+    // CHECK TURN
+    // Manages flipping of the character
+    // Flips the character if the input is in the opposite direction they're facing
+    // DEPRECATED DUE TO BLEND TREE
+    /*public void checkTurn()
+    {
+
+        if (playerInput.x < 0)
+        {
+            facingRight = false;
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
+        }
+        else if (playerInput.x > 0)
+        {
+            facingRight = true;
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        //// If the player is currently facing right, and has input left
+        //if (facingRight && playerInput.x == -1)
+        //{
+        //    // flip the character
+        //    Flip();
+        //}
+        //else if (!facingRight && playerInput.x == 1)
+        //{
+        //    // else if the character is facing left and is going right, flip the character
+        //    Flip();
+        //}
+    }*/
 
 
 }

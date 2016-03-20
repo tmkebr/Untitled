@@ -26,9 +26,17 @@ public class Light_Damage : MonoBehaviour {
     [Tooltip("What is the current damage multiplier considering the distance and brightness?")]
     public float currentDamageMult;
 
+    [Tooltip("The amount of knockback applied when damaged")]
+    public float knockbackForce;
+    [Tooltip("The frequency of the knockback applied when damage")]
+    public float knockbackFrequency;
+    
     float currentDecelTime, decelTime, t, weightedAvg, midpoint;
     float tParam = 0;
     float effectiveBrightness;
+    float knockbackTimer;
+
+    public SpriteRenderer colorSprite;
 
 	// Use this for initialization
 	void OnValidate () {
@@ -41,6 +49,12 @@ public class Light_Damage : MonoBehaviour {
 
         // connect the starting speed to the connected enemy's speed
         startSpeed = enemyAI.speed;
+
+        // set up the knockback timer
+        knockbackTimer = knockbackFrequency;
+
+        // get the colored sprite
+        colorSprite = GetComponentInChildren<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -72,8 +86,11 @@ public class Light_Damage : MonoBehaviour {
 
             // Calculate the appropriate damage
             // Damage the enemy
+            // knock the enemy back
             currentDamageMult = calculateDamageAtDistance();
             enemy.DamageEnemy((int) currentDamageMult);
+            knockback();
+            desaturate(currentDamageMult);
         }
 
         // ELSE: not in the light
@@ -130,5 +147,51 @@ public class Light_Damage : MonoBehaviour {
             //distanceFactor = avgDamage + (slope * distance);
         }
         return distanceFactor;
+    }
+
+    void knockback()
+    {
+        // knock the enemy back if we are able to
+        // else count down the frequency timer
+        if (knockbackTimer <= 0)
+        {
+            // reset the timer
+            knockbackTimer = knockbackFrequency;
+
+            // get the normalized direction of the light
+            Vector2 lightDir = connectedLight.transform.forward.normalized;
+
+            // calculate the knockback vector as a product of the default force and the current damage multiplier
+            //Vector2 knockback = (lightDir * knockbackForce * currentDamageMult);
+            Vector2 knockback = (lightDir * knockbackForce);
+
+            // knock the enemy back
+            enemy.GetComponent<Rigidbody2D>().AddForce(knockback);
+        }
+        else
+        {
+            // decrease the cooldown timer
+            knockbackTimer -= Time.deltaTime;
+        }
+    }
+
+    void desaturate(float damage)
+    {
+        // amount to desaturate comes from a remapping of the damage to 0-1
+        float desAmt = Remap(damage, lowDamage, highDamage, 0f, 1f);
+        //Debug.Log("Remapped = " + desAmt);
+
+        // get the old color and create the new color
+        Color curColor = colorSprite.color;
+        Color newColor = new Color(curColor.r, curColor.g, curColor.b, Mathf.Clamp(curColor.a - desAmt, 0f, 1f));
+        Debug.Log(" R: " + newColor.r + " G: " + newColor.g + " B: " + newColor.b + " A: " + newColor.a);
+
+        // update the opacity of the colored sprite
+        colorSprite.color = newColor;
+    }
+
+    float Remap(this float value, float from1, float to1, float from2, float to2)
+    {
+        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 }
