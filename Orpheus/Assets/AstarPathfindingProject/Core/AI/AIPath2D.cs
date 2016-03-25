@@ -131,13 +131,15 @@ public class AIPath2D : MonoBehaviour
      * Filled in by #CalculateVelocity */
     protected Vector2 targetDirection;
 
-    public float speed = 2;
+    public float speed;
     public float chaseSpeed = 4;
     public float patrolSpeed = 2;
+    public float alertSpeed = 2;
 
     public Transform[] patrolPoints;
 
     protected bool facingRight = true;
+    Animator anim; // the main animator of the enemy
 
     public enum Status { PATROL, CHASE, ALERT };
 
@@ -156,10 +158,15 @@ public class AIPath2D : MonoBehaviour
     {
         seeker = GetComponent<Seeker> ();
 
+        // by default, the enemy is moving at 100% speed
+        speed = 1f;
+
         //This is a simple optimization, cache the transform component lookup
         tr = transform;
 
         rigid = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        anim.SetBool("isStopped", false);
     }
 
     /** Starts searching for paths.
@@ -338,7 +345,12 @@ public class AIPath2D : MonoBehaviour
 
     public virtual void Update ()
     {
+        // if we can't move, either stop the animation or just return
         if (!canMove) {
+            if (!anim.GetBool("isStopped"))
+            {
+                anim.SetBool("isStopped", true);
+            }
             return;
         }
 
@@ -470,7 +482,25 @@ public class AIPath2D : MonoBehaviour
 
         Vector3 forward = tr.forward;
         float dot = Vector3.Dot (dir.normalized, forward);
-        float sp = speed * Mathf.Max (dot, minMoveScale) * slowdown;
+        float sp;
+
+
+        // Calculate the speed as a percentage of the overall speed modifier
+        // PATROL
+        if (curStatus == Status.PATROL)
+        {
+            sp = speed * patrolSpeed * Mathf.Max(dot, minMoveScale) * slowdown;
+        }
+        // CHASE
+        else if (curStatus == Status.CHASE)
+        {
+            sp = speed * chaseSpeed * Mathf.Max(dot, minMoveScale) * slowdown;
+        }
+        // ALERT
+        else
+        {
+            sp = speed * alertSpeed * Mathf.Max(dot, minMoveScale) * slowdown;
+        }
 
 
         if (Time.deltaTime > 0) {
@@ -600,7 +630,7 @@ public class AIPath2D : MonoBehaviour
         // disable the current path
         this.OnDisable();
 
-        speed = chaseSpeed;
+        //speed = chaseSpeed;
         target = newTarget;
 
         this.Start();
@@ -613,7 +643,7 @@ public class AIPath2D : MonoBehaviour
         curStatus = Status.PATROL;
         this.OnDisable();
 
-        speed = patrolSpeed;
+        //speed = patrolSpeed;
         target = getClosestPatrolPoint(patrolPoints);
 
         this.Start();

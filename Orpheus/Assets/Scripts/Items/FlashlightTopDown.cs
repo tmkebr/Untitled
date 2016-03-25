@@ -110,6 +110,9 @@ public class FlashlightTopDown : MonoBehaviour
         difference.Normalize();		// normalizing the vector. Meaning that all the sum of the vector will be equal to 1
 
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;	// find the angle in degrees
+        Debug.Log("Rot : " + rotZ);
+        Mathf.Clamp(rotZ, -90f, 90f);
+        Debug.Log("Clamped Rot: " + rotZ);
         transform.rotation = Quaternion.Euler(-rotZ, rotationOffset,rotationOffset);
         //transform.rotation = Quaternion.Euler(0f, 2*rotationOffset, 3*rotationOffset - rotZ);
     }

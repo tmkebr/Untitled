@@ -16,8 +16,10 @@ public class Enemy_Sight : MonoBehaviour {
         // only pick up if the player is colliding with it
         if (!other.gameObject.CompareTag("Player")) return;
 
-        Debug.Log("colliding");
-        Debug.Log("Here " + other.transform.position);
+        //Debug.Log("colliding");
+        //Debug.Log("Here " + other.transform.position);
+
+
         // the enemy is now alert
         ai.chase(player.transform);
         Debug.Log("Starting chase... ");

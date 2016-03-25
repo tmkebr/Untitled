@@ -15,7 +15,8 @@ public class Light_Damage : MonoBehaviour {
     public float timeTillStop;
     [Tooltip("Damage multiplier. High  @ close range, low @ long range, avg in middle")]
     public float avgDamage, lowDamage, highDamage;
-    [Tooltip("The start and end speed of the enemy as it takes damage.")]
+    [Tooltip("The start and end speed of the enemy as it takes damage. In percentage of total speed.")]
+    [Range(0,1)]
     public float startSpeed, endSpeed;
     [Tooltip("% of damage calculated by distance from enemy to light.")]
     [Range(0, 1)]
@@ -25,36 +26,28 @@ public class Light_Damage : MonoBehaviour {
     public float brightnessWeight;
     [Tooltip("What is the current damage multiplier considering the distance and brightness?")]
     public float currentDamageMult;
-
-    [Tooltip("The amount of knockback applied when damaged")]
-    public float knockbackForce;
-    [Tooltip("The frequency of the knockback applied when damage")]
-    public float knockbackFrequency;
     
     float currentDecelTime, decelTime, t, weightedAvg, midpoint;
     float tParam = 0;
     float effectiveBrightness;
-    float knockbackTimer;
 
     public SpriteRenderer colorSprite;
 
-	// Use this for initialization
-	void OnValidate () {
+
+
+    // Use this for initialization
+    void OnValidate () {
         // make sure the brightness and distance weight's = 100
         brightnessWeight = 1f - distanceWeight;
 
+        // get necessary components
         connectedDetector = GetComponent<LightDetector>();
         enemyAI = GetComponent<AIPath2D>();
         enemy = GetComponent<Enemy>();
+        colorSprite = GetComponentInChildren<SpriteRenderer>();
 
         // connect the starting speed to the connected enemy's speed
-        startSpeed = enemyAI.speed;
-
-        // set up the knockback timer
-        knockbackTimer = knockbackFrequency;
-
-        // get the colored sprite
-        colorSprite = GetComponentInChildren<SpriteRenderer>();
+        startSpeed = enemyAI.speed;       
 	}
 	
 	// Update is called once per frame
@@ -71,26 +64,39 @@ public class Light_Damage : MonoBehaviour {
             timeTillStop = Mathf.Clamp(timeTillStop - weightedAvg, 0, timeTillStop);
             //print("weight = " + weightedAvg + "time = " + timeTillStop);
 
-                // if it still needs to be lerped
-                if (tParam < 1) {
-                     tParam += Time.deltaTime / timeTillStop; // This will increment tParam based on Time.deltaTime multiplied by a speed multiplier
-                     enemyAI.speed = Mathf.Lerp(startSpeed, endSpeed, tParam);
-                }
+            // Speed adjustment
+            if (tParam < 1) {
 
-                else if(!enemyAI.canMove)
+                tParam += Time.deltaTime / timeTillStop; // This will increment tParam based on Time.deltaTime multiplied by a speed multiplier
+                enemyAI.speed = Mathf.Lerp(startSpeed, endSpeed, tParam);
+
+                // freeze and kill the enemy
+                if (enemyAI.speed <= 0)
                 {
-                // enemy is frozen
-                Debug.Log("Enemy is frozen!");
+                    Debug.Log("Enemy frozen!");
+                    enemyAI.canMove = false;
+                    enemy.killEnemy();
                 }
+            }
 
 
-            // Calculate the appropriate damage
-            // Damage the enemy
-            // knock the enemy back
-            currentDamageMult = calculateDamageAtDistance();
-            enemy.DamageEnemy((int) currentDamageMult);
-            knockback();
-            desaturate(currentDamageMult);
+            // enemy not frozen
+            if(enemyAI.canMove)
+            {
+                // Calculate the appropriate damage
+                // Damage the enemy
+                // knock the enemy back
+                Debug.Log("Hurting enemy...");
+                currentDamageMult = calculateDamageAtDistance();
+                enemy.DamageEnemy((int)currentDamageMult);
+                enemy.knockback(connectedLight.transform.forward);
+                desaturate(currentDamageMult);
+            }
+            // enemy frozen
+            else
+            {
+                Debug.Log("STILL FROZEN!");
+            }            
         }
 
         // ELSE: not in the light
@@ -149,42 +155,15 @@ public class Light_Damage : MonoBehaviour {
         return distanceFactor;
     }
 
-    void knockback()
-    {
-        // knock the enemy back if we are able to
-        // else count down the frequency timer
-        if (knockbackTimer <= 0)
-        {
-            // reset the timer
-            knockbackTimer = knockbackFrequency;
-
-            // get the normalized direction of the light
-            Vector2 lightDir = connectedLight.transform.forward.normalized;
-
-            // calculate the knockback vector as a product of the default force and the current damage multiplier
-            //Vector2 knockback = (lightDir * knockbackForce * currentDamageMult);
-            Vector2 knockback = (lightDir * knockbackForce);
-
-            // knock the enemy back
-            enemy.GetComponent<Rigidbody2D>().AddForce(knockback);
-        }
-        else
-        {
-            // decrease the cooldown timer
-            knockbackTimer -= Time.deltaTime;
-        }
-    }
-
     void desaturate(float damage)
     {
-        // amount to desaturate comes from a remapping of the damage to 0-1
-        float desAmt = Remap(damage, lowDamage, highDamage, 0f, 1f);
-        //Debug.Log("Remapped = " + desAmt);
+        // the relative damage comes as a percentage of the enemy's total health
+        float relDamage = damage / enemy.stats.maxHealth;
 
         // get the old color and create the new color
         Color curColor = colorSprite.color;
-        Color newColor = new Color(curColor.r, curColor.g, curColor.b, Mathf.Clamp(curColor.a - desAmt, 0f, 1f));
-        Debug.Log(" R: " + newColor.r + " G: " + newColor.g + " B: " + newColor.b + " A: " + newColor.a);
+        Color newColor = new Color(curColor.r, curColor.g, curColor.b, Mathf.Clamp(curColor.a - relDamage, 0f, 1f));
+        //Debug.Log(" R: " + newColor.r + " G: " + newColor.g + " B: " + newColor.b + " A: " + newColor.a);
 
         // update the opacity of the colored sprite
         colorSprite.color = newColor;
