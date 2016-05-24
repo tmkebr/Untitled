@@ -43,6 +43,9 @@ public class Enemy : MonoBehaviour {
     public AudioClip deathSound;
     private AudioSource theAudio;
 
+    [Tooltip("Effect that spawns when damaged")]
+    public GameObject damageEffect;
+
     // Use this for initialization
     void Start () {
 
@@ -75,6 +78,7 @@ public class Enemy : MonoBehaviour {
         // the enemy is no longer alive, so it has 0 health
         isAlive = false;
         curHealth = 0f;
+        gameObject.tag = "Statue";
 
         // play the death sound
         theAudio.PlayOneShot(deathSound);
@@ -115,6 +119,9 @@ public class Enemy : MonoBehaviour {
 
             // play the damage sound
             theAudio.PlayOneShot(damageSound);
+
+            GameObject effect = Instantiate(damageEffect);
+            effect.transform.position = transform.position;
         }
         else
         {

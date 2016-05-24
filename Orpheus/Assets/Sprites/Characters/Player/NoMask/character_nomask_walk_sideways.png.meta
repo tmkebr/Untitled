@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: b3de4e8e89e306d4086294995e748473
-timeCreated: 1458375530
+timeCreated: 1464037586
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -65,9 +65,9 @@ TextureImporter:
     - name: character_nomask_walkright0
       rect:
         serializedVersion: 2
-        x: 28
+        x: 25
         y: 81
-        width: 8
+        width: 14
         height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -76,31 +76,31 @@ TextureImporter:
     - name: character_nomask_walkright1
       rect:
         serializedVersion: 2
-        x: 91
+        x: 89
         y: 81
-        width: 9
+        width: 14
         height: 25
-      alignment: 9
-      pivot: {x: 0.5075675, y: 0.4918274}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkright2
       rect:
         serializedVersion: 2
-        x: 154
-        y: 81
-        width: 13
-        height: 24
-      alignment: 9
-      pivot: {x: 0.43713263, y: 0.52}
+        x: 153
+        y: 80
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkright3
       rect:
         serializedVersion: 2
-        x: 219
+        x: 217
         y: 81
-        width: 9
+        width: 14
         height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -109,31 +109,31 @@ TextureImporter:
     - name: character_nomask_walkright4
       rect:
         serializedVersion: 2
-        x: 284
+        x: 281
         y: 81
-        width: 8
+        width: 14
         height: 25
-      alignment: 9
-      pivot: {x: 0.4404068, y: 0.5027243}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkright5
       rect:
         serializedVersion: 2
-        x: 348
+        x: 345
         y: 81
-        width: 8
-        height: 24
-      alignment: 9
-      pivot: {x: 0.4404068, y: 0.52}
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkleft0
       rect:
         serializedVersion: 2
-        x: 28
+        x: 25
         y: 17
-        width: 8
+        width: 14
         height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -142,12 +142,12 @@ TextureImporter:
     - name: character_nomask_walkleft1
       rect:
         serializedVersion: 2
-        x: 92
+        x: 89
         y: 17
-        width: 9
+        width: 14
         height: 25
-      alignment: 9
-      pivot: {x: 0.45605385, y: 0.50197786}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkleft2
@@ -155,29 +155,29 @@ TextureImporter:
         serializedVersion: 2
         x: 153
         y: 17
-        width: 13
-        height: 24
-      alignment: 9
-      pivot: {x: 0.53803074, y: 0.52}
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkleft3
       rect:
         serializedVersion: 2
-        x: 220
+        x: 217
         y: 17
-        width: 9
+        width: 14
         height: 25
-      alignment: 9
-      pivot: {x: 0.45055982, y: 0.49406746}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: character_nomask_walkleft4
       rect:
         serializedVersion: 2
-        x: 284
+        x: 281
         y: 17
-        width: 8
+        width: 14
         height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -186,12 +186,12 @@ TextureImporter:
     - name: character_nomask_walkleft5
       rect:
         serializedVersion: 2
-        x: 348
+        x: 345
         y: 17
-        width: 8
-        height: 24
-      alignment: 9
-      pivot: {x: 0.4876442, y: 0.52}
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []

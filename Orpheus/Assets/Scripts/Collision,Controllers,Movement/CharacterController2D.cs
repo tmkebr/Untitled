@@ -7,7 +7,13 @@ public class CharacterController2D : MonoBehaviour
     private Animator anim;
     public Vector2 walkSpeed = new Vector2(2,2);
     public Vector2 sprintSpeed = new Vector2(4, 4);
-    public KeyCode sprintKey = KeyCode.LeftShift;
+    public GameObject dustEffectLeft;
+    public GameObject dustEffectRight;
+    public GameObject dustEffectUp;
+    public GameObject dustEffectDown;
+    public float dustFrequency = 0.3f;
+    float dustTimer;
+    //public KeyCode sprintKey = KeyCode.LeftShift;
 
     [HideInInspector]
     public Vector2 playerInput;
@@ -20,6 +26,9 @@ public class CharacterController2D : MonoBehaviour
     {
         anim = GetComponent<Animator>(); // stores object's animations
 
+        // set up the dust cloud timer
+        dustTimer = dustFrequency;
+
         //facingRight = true;
     }
 
@@ -27,6 +36,8 @@ public class CharacterController2D : MonoBehaviour
     {
         // stores the key press
         playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        Debug.Log("Moving " + "X = " + playerInput.x + " Y = " + playerInput.y);
 
         anim.SetFloat("SpeedX", playerInput.x);
         anim.SetFloat("SpeedY", playerInput.y);
@@ -40,9 +51,98 @@ public class CharacterController2D : MonoBehaviour
     public void move()
     {
         Vector2 moveSpeed = walkSpeed;
-        if (Input.GetKey(sprintKey))
+
+        float curX = playerInput.x;
+        float curY = playerInput.y;
+        if (Mathf.Abs(curX) > 0.5f || Mathf.Abs(curY) > 0.5f)
         {
             moveSpeed = sprintSpeed;
+            GameObject cloud;
+
+
+            // spawn a dust cloud in the appropriate direction if we are able to
+            // else count down the frequency timer
+            if(dustTimer <= 0)
+            {
+                // reset the timer
+                dustTimer = dustFrequency;
+
+                // if running right
+                if (curX > 0)
+                {
+
+                    // if also running up
+                    if (curY > .5f)
+                    {
+                        cloud = Instantiate(dustEffectUp);
+                        cloud.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+                    }
+
+                    // if also running down
+                    else if (curY < -0.5f)
+                    {
+                        cloud = Instantiate(dustEffectDown);
+                        cloud.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+                    }
+
+                    // else just running right
+                    else
+                    {
+                        cloud = Instantiate(dustEffectRight);
+                        cloud.transform.position = new Vector2(transform.position.x, transform.position.y - 0.5f);
+                    }
+                }
+
+                // if running left
+                else if (curX < 0)
+                {
+
+                    // if also running up
+                    if (curY > .5f)
+                    {
+                        cloud = Instantiate(dustEffectUp);
+                        cloud.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+                    }
+
+                    // if also running down
+                    else if (curY < -0.5f)
+                    {
+                        cloud = Instantiate(dustEffectDown);
+                        cloud.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+                    }
+
+                    // else just running left
+                    else
+                    {
+                        cloud = Instantiate(dustEffectLeft);
+                        cloud.transform.position = new Vector2(transform.position.x, transform.position.y - 0.5f);
+                    }
+
+                }
+
+                else
+                {
+                    // if also running up
+                    if (curY > .5f)
+                    {
+                        cloud = Instantiate(dustEffectUp);
+                        cloud.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+                    }
+
+                    // if also running down
+                    else if (curY < -0.5f)
+                    {
+                        cloud = Instantiate(dustEffectDown);
+                        cloud.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+                    }
+                }
+            }
+            // else countdown
+            else
+            {
+                dustTimer -= Time.deltaTime;
+            }
+            
         }
 
         // Move the character

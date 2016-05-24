@@ -1,0 +1,345 @@
+fileFormatVersion: 2
+guid: 224c0fabb17f5fd458e18c527131d0c3
+timeCreated: 1464036687
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: character_run_right_0
+    21300002: character_run_right_1
+    21300004: character_run_right_2
+    21300006: character_run_right_3
+    21300008: character_run_right_4
+    21300010: character_run_right_5
+    21300012: character_run_left_0
+    21300014: character_run_left_1
+    21300016: character_run_left_2
+    21300018: character_run_left_3
+    21300020: character_run_left_4
+    21300022: character_run_left_5
+    21300024: character_run_backward_0
+    21300026: character_run_backward_1
+    21300028: character_run_backward_2
+    21300030: character_run_backward_3
+    21300032: character_run_backward_4
+    21300034: character_run_backward_5
+    21300036: character_run_forward_0
+    21300038: character_run_forward_1
+    21300040: character_run_forward_2
+    21300042: character_run_forward_3
+    21300044: character_run_forward_4
+    21300046: character_run_forward_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 16
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: character_run_right_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 207
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_right_1
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 207
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_right_2
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 207
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_right_3
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 207
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_right_4
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 207
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_right_5
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 207
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_left_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 143
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_left_1
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 143
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_left_2
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 143
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_left_3
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 143
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_left_4
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 143
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_left_5
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 143
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_backward_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 76
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_backward_1
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 76
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_backward_2
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 76
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_backward_3
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 76
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_backward_4
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 76
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_backward_5
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 76
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_forward_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 12
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_forward_1
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 12
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_forward_2
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 12
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_forward_3
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 12
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_forward_4
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 12
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: character_run_forward_5
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 12
+        width: 15
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
